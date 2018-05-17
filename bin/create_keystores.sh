@@ -46,6 +46,10 @@ keytool -import \
     -alias xpaas.ca \
     -keystore truststore.jks
 
+keytool -import \
+    -file xpaas.key \
+    -keystore truststore.jks
+
 keytool -genseckey \
     -alias jgroups \
     -storetype JCEKS \

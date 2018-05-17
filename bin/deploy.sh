@@ -16,7 +16,9 @@ oc policy add-role-to-user view system:serviceaccount:${PROJECT}:default
 
 oc secret new sso-jgroup-secret jgroups.jceks
 oc secret new sso-ssl-secret sso-https.jks truststore.jks
-oc secrets link default sso-jgroup-secret sso-ssl-secret
+oc secret new sso-app-secret truststore.jks
+oc secrets link default sso-jgroup-secret sso-ssl-secret sso-app-secret
+oc volume dc/sso --add --claim-size 512M --mount-path /opt/eap/standalone/configuration/standalone_xml_history --name standalone-xml-history
 
 oc new-app -f ../templates/sso72-ephem.yml \
     -p APPLICATION_NAME=${PROJECT} \
@@ -27,4 +29,4 @@ oc new-app -f ../templates/sso72-ephem.yml \
     -p HTTPS_SECRET=sso-ssl-secret \
     -p JGROUPS_ENCRYPT_KEYSTORE=jgroups.jceks \
     -p JGROUPS_ENCRYPT_PASSWORD=password \
-    -p JGROUPS_ENCRYPT_SECRET=sso-jgroup-secret \
+    -p JGROUPS_ENCRYPT_SECRET=sso-jgroup-secret
