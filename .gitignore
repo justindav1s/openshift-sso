@@ -1,3 +1,10 @@
+*.crt
+*.jks
+*.jceks
+*.csr
+*.key
+*.srl
+
 # Compiled class file
 *.class
 
