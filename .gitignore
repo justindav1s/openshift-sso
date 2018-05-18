@@ -1,9 +1,9 @@
-*.crt
+.idea/
+*.iml
 *.jks
 *.jceks
-*.csr
-*.key
-*.srl
+*.p12
+*.crt
 
 # Compiled class file
 *.class
