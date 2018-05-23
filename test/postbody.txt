@@ -1,0 +1,6 @@
+grant_type=password
+client_id=amazin-angular
+client_secret=a4ed2f3b-9953-4b92-a966-5e0cf0cc9280
+username=amazin
+password=password
+scope=openid profile

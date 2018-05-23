@@ -1,5 +1,6 @@
+Login page
 
+https://secure-sso.apps.ocp.datr.eu/auth/realms/amazin/account
+https://secure-sso.apps.ocp.datr.eu/auth/realms/amazin/amazin-app-buy
 
-eap-demo realm public key
-
-MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuk6FoCH6f9XHJUcfnbL3nQIzCmntRCR3oqfIwroJumoD7bR9XTmuWGkzPg/eZkKcvBdeCKFjwHt4KzdBwqN+XAudJQ14GAI2xDA/Iu9M0jU3cixVw9Zuxb1YYdYeXBWfVYQzNMBAyPJwifCui9b0IsRSrf4+I7Snfcspb3jouPaLK+Yj5/LMUjZFCb8iVVWLQEGxgbekm8NmkxSswNKmvRXl779hMQKtoEg2irl0hJwfUAWetjp8kISES3R64WNCTD1EOV2U6KxECJqtK3KJSt9Fq4VhsBvP49PPSHXMTcH7H/WgrE0RD3hFSAbzOfPvJs52vZ2Ilde0dkWE3oEJdwIDAQAB
+https://secure-sso.apps.ocp.datr.eu/auth/realms/amazin/console/index.html
