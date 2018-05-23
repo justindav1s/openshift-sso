@@ -49,6 +49,12 @@
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-spring-boot-starter</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.jnd.microservices</groupId>
+            <artifactId>data-model</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <properties>
