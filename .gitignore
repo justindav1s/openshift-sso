@@ -4,7 +4,8 @@
 *.jceks
 *.p12
 *.crt
-
+target/
+/target/
 # Compiled class file
 *.class
 
