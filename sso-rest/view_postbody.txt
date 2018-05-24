@@ -1,0 +1,1 @@
+grant_type=password&client_id=amazin-app-view&client_secret=2608a80e-19b3-4c23-9b5b-d437f567bd23&username=amazin&password=password&scope=openid login profile
