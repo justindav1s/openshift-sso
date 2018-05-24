@@ -4,6 +4,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jnd.microservices.model.Product;
 import org.jnd.microservices.model.utils.B3HeaderHelper;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.representations.AccessToken;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,9 +36,9 @@ public class InventoryController {
 
 
     @GetMapping("/products")
-    public String products(Model model) {
+    public String products(Principal principal, Model model) {
         log.info(" products(Model model) : "+model);
-        ResponseEntity<List> exchange = this.getAllProducts();
+        ResponseEntity<List> exchange = this.getAllProducts(principal);
         model.addAttribute("products", exchange.getBody());
 
         return "products";
@@ -62,11 +65,17 @@ public class InventoryController {
         return exchange;
     }
 
-    public ResponseEntity<List> getAllProducts() {
+    public ResponseEntity<List> getAllProducts(Principal principal) {
 
         List<ClientHttpRequestInterceptor> interceptors = new ArrayList<ClientHttpRequestInterceptor>();
         interceptors.add(new LoggingRequestInterceptor());
-        restTemplate.setInterceptors(interceptors);
+        //restTemplate.setInterceptors(interceptors);
+
+        KeycloakPrincipal kPrinciple = (KeycloakPrincipal)principal;
+        String token = ((KeycloakPrincipal)principal).getKeycloakSecurityContext().getTokenString();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer "+token);
 
         log.info(" getAllProducts Enter");
 
@@ -74,7 +83,7 @@ public class InventoryController {
                 this.restTemplate.exchange(
                         "http://"+inventory_host+"/products/all",
                         HttpMethod.GET,
-                        null,
+                        new HttpEntity<byte[]>(headers),
                         new ParameterizedTypeReference<List>() {});
 
         log.info("All Products Response : "+exchange.getBody());

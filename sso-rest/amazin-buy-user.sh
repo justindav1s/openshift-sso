@@ -21,7 +21,7 @@ TIMEOUT=30
 
 #echo "Keycloak host : $KEYCLOAK"
 
-RESPONSE=$(curl -s --connect-timeout $TIMEOUT \
+RESPONSE=$(curl -s -v --connect-timeout $TIMEOUT \
     -d "@buy_postbody.txt" \
     -H "Content-Type: application/x-www-form-urlencoded" \
     ${KEYCLOAK}/auth/realms/${REALM}/protocol/openid-connect/token)
@@ -35,7 +35,7 @@ endswith1 ${PART2_BASE64} | base64 -D | jq .
 endswith2 ${PART2_BASE64} | base64 -D | jq .
 
 
-#./decodeToken.sh ${ACCESS_TOKEN}
+./decodeToken.sh ${ACCESS_TOKEN}
 
 curl -v -H "Authorization: Bearer ${ACCESS_TOKEN}
 " http://localhost:8081/products/all
