@@ -73,6 +73,7 @@ public class InventoryController {
 
         KeycloakPrincipal kPrinciple = (KeycloakPrincipal)principal;
         String token = ((KeycloakPrincipal)principal).getKeycloakSecurityContext().getTokenString();
+        log.info("Token : "+token);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer "+token);
