@@ -4,7 +4,7 @@
 
 Use scripts in deploy_keycloak folder  to set up java keystores and to deploy a keycloak pod to Openshift
 
-## Setting to secure an application
+## Settings to secure a web application thats a client for a rest service
 
 1. Setup your own realm
 2. Setup two clients within this realm, say :
@@ -70,5 +70,8 @@ keycloak.security-constraints[0].securityCollections[0].patterns[1]=/products
 
 ```       
    
-  
+### Setting up with "app-rest" client  
 
+These setting are used to secure a REST service. Such a REST service will be come accesible when a client provides a valid access token.
+
+In the above setup we secured the products web page. In this section we will secure the products service, and ensure that people who have access to the product page also have access to the product service that the page needs data from.

@@ -17,12 +17,12 @@ public class GreetingController {
     private Log log = LogFactory.getLog(InventoryController.class);
 
     @GetMapping("/greeting")
-    public String greeting(Principal principal, Model model) {
+    public String greeting(Model model) {
         model.addAttribute("name", "justin");
         log.info("***");
-        KeycloakPrincipal kPrinciple = (KeycloakPrincipal)principal;
-        AccessToken token = kPrinciple.getKeycloakSecurityContext().getToken();
-        log.info(kPrinciple.getKeycloakSecurityContext().getTokenString());
+//        KeycloakPrincipal kPrinciple = (KeycloakPrincipal)principal;
+//        AccessToken token = kPrinciple.getKeycloakSecurityContext().getToken();
+//        log.info(kPrinciple.getKeycloakSecurityContext().getTokenString());
         return "greeting";
     }
 
