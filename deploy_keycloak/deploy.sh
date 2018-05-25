@@ -20,7 +20,7 @@ oc secret new sso-app-secret datr.eu.jks
 oc secrets link default sso-jgroup-secret sso-ssl-secret sso-app-secret
 
 
-oc new-app -f ../templates/sso72-ephem.yml \
+oc new-app -f templates/sso72-ephem.yml \
     -p APPLICATION_NAME=${PROJECT} \
     -p HOSTNAME_HTTPS=secure-${CN} \
     -p HOSTNAME_HTTP=s${CN} \
