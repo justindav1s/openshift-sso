@@ -72,6 +72,6 @@ keycloak.security-constraints[0].securityCollections[0].patterns[1]=/products
    
 ### Setting up with "app-rest" client  
 
-These setting are used to secure a REST service. Such a REST service will be come accesible when a client provides a valid access token.
+The settings below are used to secure a REST service. Such a REST service will be come accesible when a client provides a valid access token.
 
 In the above setup we secured the products web page. In this section we will secure the products service, and ensure that people who have access to the product page also have access to the product service that the page needs data from.
