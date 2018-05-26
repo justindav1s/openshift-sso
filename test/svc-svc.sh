@@ -2,9 +2,7 @@
 
 function padBase64  {
     STR=$1
-    #echo STR=$STR
     MOD=$((${#STR}%4))
-    #echo ${MOD}\n
     if [[ $MOD -eq 1 ]]; then
        STR="${STR}="
     elif [[ $MOD -eq 2 ]]; then
