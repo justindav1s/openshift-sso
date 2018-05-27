@@ -18,7 +18,7 @@ KEYCLOAK=https://secure-sso.apps.ocp.datr.eu
 REALM="amazin"
 GRANT_TYPE="client_credentials"
 CLIENT="svc-svc"
-CLIENT_SECRET="85a1c4ad-7c5c-4fc8-8bba-ca1b55276270"
+CLIENT_SECRET="16a701d4-d468-4718-8c3b-7874e02cf810"
 POST_BODY="grant_type=${GRANT_TYPE}&client_id=${CLIENT}&client_secret=${CLIENT_SECRET}"
 
 echo "Keycloak host : $KEYCLOAK"

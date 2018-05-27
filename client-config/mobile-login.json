@@ -28,7 +28,7 @@
         "saml.server.signature": "false",
         "saml.server.signature.keyinfo.ext": "false"
     },
-    "fullScopeAllowed": true,
+    "fullScopeAllowed": false,
     "nodeReRegistrationTimeout": -1,
     "protocolMappers": [
         {
@@ -116,7 +116,8 @@
             "consentText": "${fullName}",
             "config": {
                 "id.token.claim": "true",
-                "access.token.claim": "true"
+                "access.token.claim": "true",
+                "userinfo.token.claim": "true"
             }
         }
     ],

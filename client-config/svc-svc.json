@@ -39,6 +39,7 @@
             "consentText": "",
             "config": {
                 "user.session.note": "clientId",
+                "userinfo.token.claim": "true",
                 "id.token.claim": "true",
                 "access.token.claim": "true",
                 "claim.name": "clientId",
@@ -54,6 +55,7 @@
             "consentText": "",
             "config": {
                 "user.session.note": "clientHost",
+                "userinfo.token.claim": "true",
                 "id.token.claim": "true",
                 "access.token.claim": "true",
                 "claim.name": "clientHost",
@@ -113,7 +115,8 @@
             "consentText": "${fullName}",
             "config": {
                 "id.token.claim": "true",
-                "access.token.claim": "true"
+                "access.token.claim": "true",
+                "userinfo.token.claim": "true"
             }
         },
         {
@@ -157,6 +160,7 @@
             "consentText": "",
             "config": {
                 "user.session.note": "clientAddress",
+                "userinfo.token.claim": "true",
                 "id.token.claim": "true",
                 "access.token.claim": "true",
                 "claim.name": "clientAddress",

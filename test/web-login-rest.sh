@@ -2,12 +2,10 @@
 
 function padBase64  {
     STR=$1
-    #echo STR=$STR
     MOD=$((${#STR}%4))
-    #echo ${MOD}
     if [ $MOD -eq 1 ]; then
        STR="${STR}="
-    elif [ $MOD -eq 2 ]; then
+    elif [ $MOD -gt 1 ]; then
        STR="${STR}=="
     fi
     echo ${STR}
@@ -17,7 +15,7 @@ KEYCLOAK=https://secure-sso.apps.ocp.datr.eu
 REALM="amazin"
 GRANT_TYPE="password"
 CLIENT="web-login"
-CLIENT_SECRET="ff63c4db-8964-4536-9eca-00db1aeaa628"
+CLIENT_SECRET="6f003355-3f71-4d2a-842d-d87244d7a5b3"
 USER="amazin"
 USER_PASSWORD="password"
 
