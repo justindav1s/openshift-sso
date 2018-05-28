@@ -15,9 +15,9 @@ KEYCLOAK=https://secure-sso.apps.ocp.datr.eu
 REALM="amazin"
 GRANT_TYPE="password"
 CLIENT="web-login"
-CLIENT_SECRET="6f003355-3f71-4d2a-842d-d87244d7a5b3"
+CLIENT_SECRET="44c56fa8-c2ec-4850-aed7-764561bb6b1b"
 USER="amazin"
-USER_PASSWORD="password"
+USER_PASSWORD="qwerty"
 
 POST_BODY="grant_type=${GRANT_TYPE}&client_id=${CLIENT}&client_secret=${CLIENT_SECRET}&username=${USER}&password=${USER_PASSWORD}"
 

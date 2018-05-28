@@ -16,9 +16,9 @@ KEYCLOAK=https://secure-sso.apps.ocp.datr.eu
 REALM="amazin"
 GRANT_TYPE="password"
 CLIENT="mobile-login"
-CLIENT_SECRET="52062027-a29d-4558-a2d8-5d3d665c61b7"
+CLIENT_SECRET="b62c28ea-480d-4888-b0e4-faf00f5a45f8"
 USER="amazin"
-USER_PASSWORD="password"
+USER_PASSWORD="qwerty"
 POST_BODY="grant_type=${GRANT_TYPE}&client_id=${CLIENT}&client_secret=${CLIENT_SECRET}&username=${USER}&password=${USER_PASSWORD}"
 
 echo "Keycloak host : $KEYCLOAK"

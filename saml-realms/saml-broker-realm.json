@@ -28,11 +28,11 @@
   },
   "clients": [
     {
-      "clientId": "http://localhost:8080/auth/realms/saml-broker-authentication-realm",
+      "clientId": "https://secure-sso.apps.ocp.datr.eu/auth/realms/saml-broker-authentication-realm",
       "protocol": "saml",
       "enabled": true,
       "redirectUris": [
-        "http://localhost:8080/auth/realms/saml-broker-authentication-realm/broker/saml-identity-provider/endpoint"
+        "https://secure-sso.apps.ocp.datr.eu/auth/realms/saml-broker-authentication-realm/broker/saml-identity-provider/endpoint"
       ],
       "attributes": {
         "saml.assertion.signature": "true",
