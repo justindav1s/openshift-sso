@@ -1,0 +1,19 @@
+<EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata" entityID="https://secure-sso.apps.ocp.datr.eu/auth/realms/saml-broker-authentication-realm">
+    <SPSSODescriptor AuthnRequestsSigned="true"
+            protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol urn:oasis:names:tc:SAML:1.1:protocol http://schemas.xmlsoap.org/ws/2003/07/secext">
+        <KeyDescriptor use="signing">
+          <dsig:KeyInfo xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+            <dsig:KeyName>IzH2UxfMxovYTEHn4Bh-EAj-Zrvldukl_5Snu0RA0B8</dsig:KeyName>
+            <dsig:X509Data>
+              <dsig:X509Certificate>MIICzzCCAbcCBgFjoUvpTDANBgkqhkiG9w0BAQsFADArMSkwJwYDVQQDDCBzYW1sLWJyb2tlci1hdXRoZW50aWNhdGlvbi1yZWFsbTAeFw0xODA1MjcxMTA5NTZaFw0yODA1MjcxMTExMzZaMCsxKTAnBgNVBAMMIHNhbWwtYnJva2VyLWF1dGhlbnRpY2F0aW9uLXJlYWxtMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgj8r0029eL0jJKXv6XbNj+QqsZO25HhZ0IjTEtb8mfh0tju/X8c6dXgILh5wU7OF00U+0mSYSE/+rrYKmY5g4oCleTe1+abavATP1tamtXGAUYqdutaXPrVn9yMsCWEPchSPZlEGq5iBJdA+xh9ejUmZJYXmln26HUVWq71/jC9GpjbRmFQ37f0X7WJoGyiqyttfKkKfUeBmRbX/0P0Zm6DVze8HjCDVPBllZE0a3HCgSF0rp0+s1xn7o91qdWKVattAVsGNjjDPz/sgwHOyyhDtSyajwXU+K/QUZ9pV4moGtwC9uIEymTylP7bu7qnxXIhfouEa+fEjAzTs0HJ5JQIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQB01b3tqzJAUaxOqFlYHNJmwmClD4M1Ex22YhNqlSbBP6KdYFWiVExvYiHifhhaYPf39Xz/M8bYCxGzLAjLN/aByrJYFtE63LwFW9zPto6ObTLHGBDu0Kqj/hjS5uxptcy/Wj5QvTPz0BJF4OhnEkiJAFjPzY1wqBeDIdVSmwUKSA6RnWN1BTBXg56qaMeL/d2ROTP7b0sxXdPxpDZ2CB61w0Iao7RRFVcCOxjXjBP0dxyIRlldiDMcWg9RgajM7ueJujTkhoL8gfgLzFLIVaq5ule8aDxujRd0c90Ei/bG3rB94H8XGWGVr+oNmgelOaVXzzvoDWo4kthtI3CSEvkz</dsig:X509Certificate>
+            </dsig:X509Data>
+          </dsig:KeyInfo>
+        </KeyDescriptor>
+        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://secure-sso.apps.ocp.datr.eu/auth/realms/saml-broker-authentication-realm/broker/saml-identity-provider/endpoint"/>
+        <NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress
+        </NameIDFormat>
+        <AssertionConsumerService
+                Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://secure-sso.apps.ocp.datr.eu/auth/realms/saml-broker-authentication-realm/broker/saml-identity-provider/endpoint"
+                index="1" isDefault="true" />
+    </SPSSODescriptor>
+</EntityDescriptor>

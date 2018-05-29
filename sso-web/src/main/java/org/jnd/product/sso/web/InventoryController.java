@@ -72,11 +72,14 @@ public class InventoryController {
         //restTemplate.setInterceptors(interceptors);
 
         KeycloakPrincipal kPrinciple = (KeycloakPrincipal)principal;
-        String token = ((KeycloakPrincipal)principal).getKeycloakSecurityContext().getTokenString();
-        log.info("Token : "+token);
+        String accesstoken = ((KeycloakPrincipal)principal).getKeycloakSecurityContext().getTokenString();
+        String idtoken = ((KeycloakPrincipal)principal).getKeycloakSecurityContext().getIdTokenString();
+
+        log.info("ID Token : "+idtoken);
+        log.info("Access Token : "+accesstoken);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer "+token);
+        headers.add("Authorization", "Bearer "+idtoken);
 
         log.info(" getAllProducts Enter");
 
