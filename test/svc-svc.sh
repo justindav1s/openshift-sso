@@ -24,7 +24,7 @@ POST_BODY="grant_type=${GRANT_TYPE}&client_id=${CLIENT}&client_secret=${CLIENT_S
 echo "Keycloak host : $KEYCLOAK"
 echo POST_BODY=${POST_BODY}
 
-RESPONSE=$(curl -sv \
+RESPONSE=$(curl -svk  \
     -d ${POST_BODY} \
     -H "Content-Type: application/x-www-form-urlencoded" \
     ${KEYCLOAK}/auth/realms/${REALM}/protocol/openid-connect/token)
@@ -33,7 +33,7 @@ echo ""
 ACCESS_TOKEN=$(echo ${RESPONSE} | jq -r .access_token)
 PART2_BASE64=$(echo ${ACCESS_TOKEN} | cut -d"." -f2)
 PART2_BASE64=$(padBase64 ${PART2_BASE64})
-echo ${PART2_BASE64} | base64 -D | jq .
+echo ${PART2_BASE64} | base64 -d | jq .
 
 
 ./decodeToken.sh ${ACCESS_TOKEN}
