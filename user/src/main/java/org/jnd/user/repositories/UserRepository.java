@@ -1,6 +1,7 @@
 package org.jnd.user.repositories;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.dizitart.no2.Cursor;
 import org.dizitart.no2.Nitrite;
 import org.dizitart.no2.exceptions.UniqueConstraintException;
 import org.dizitart.no2.objects.ObjectRepository;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.dizitart.no2.objects.filters.ObjectFilters.eq;
@@ -69,7 +71,7 @@ public class UserRepository{
         return user;
     }
 
-    public User get(User user) throws UserNotFoundException, IncorrectPasswordException{
+    public User login(User user) throws UserNotFoundException, IncorrectPasswordException{
 
         User candidateUser = repository.find(eq("username", user.getUsername())).firstOrDefault();
 
@@ -84,7 +86,28 @@ public class UserRepository{
         return candidateUser;
     }
 
+    public User get(User user) throws UserNotFoundException{
+
+        User candidateUser = repository.find(eq("username", user.getUsername())).firstOrDefault();
+
+        if (candidateUser == null)  {
+            throw new UserNotFoundException("User not found.");
+        }
+        return candidateUser;
+    }
+
     public void update(User user)  {
         repository.update(user);
+    }
+
+    public Long count()  {
+        return repository.size();
+    }
+
+    public User[] all()  {
+        List<User> userList = repository.find().toList();
+        log.info("User list : " + userList);
+        User[] users = userList.toArray(new User[userList.size()]);
+        return users;
     }
 }

@@ -30,6 +30,26 @@ public class UserController {
     public void init(){
     }
 
+    @RequestMapping(value = "/count", method = RequestMethod.GET)
+    ResponseEntity<?> count(@RequestHeader HttpHeaders headers) {
+        log.info("User count");
+        Long count = 0L;
+        count = userRepository.count();
+        return new ResponseEntity<>(count, null, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    ResponseEntity<?> all(@RequestHeader HttpHeaders headers) {
+        log.info("User count");
+        Long count = 0L;
+        User[] all = userRepository.all();
+
+        for (User u : all)  {
+            u.setPassword("");
+        }
+
+        return new ResponseEntity<>(all, null, HttpStatus.OK);
+    }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json")
     ResponseEntity<?> create(@RequestBody User user, @RequestHeader HttpHeaders headers) {
@@ -40,11 +60,11 @@ public class UserController {
         HttpHeaders responseHeaders = new HttpHeaders();
         try {
             userRepository.register(user);
-            responseHeaders.add("LOGIN_MESSAGE", "CREATED");
+            responseHeaders.add("SERVICE_MESSAGE", "CREATED");
             re = new ResponseEntity<>(user, responseHeaders, HttpStatus.CREATED);
         }
         catch (UsernameExistsException unee)    {
-            responseHeaders.add("LOGIN_MESSAGE", unee.getMessage());
+            responseHeaders.add("SERVICE_MESSAGE", unee.getMessage());
             re = new ResponseEntity<>(user, responseHeaders, HttpStatus.IM_USED);
         }
 
@@ -52,6 +72,32 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
+    ResponseEntity<?> login(@RequestBody User user,  @RequestHeader HttpHeaders headers) {
+
+        log.info("Login User : " + user);
+        ResponseEntity re = null;
+        HttpHeaders responseHeaders = new HttpHeaders();
+        try {
+            user = userRepository.login(user);
+            log.info("Login OK : " + user);
+            responseHeaders.add("SERVICE_MESSAGE", "OK");
+            re = new ResponseEntity<>(user, responseHeaders, HttpStatus.OK);
+        }
+        catch (UserNotFoundException unee)    {
+            log.info("Login NOT FOUND : " + user);
+            responseHeaders.add("SERVICE_MESSAGE", unee.getMessage());
+            re = new ResponseEntity<>(user, responseHeaders, HttpStatus.NOT_FOUND);
+        }
+        catch (IncorrectPasswordException unee)    {
+            log.info("Login BAD PASSWORD : " + user);
+            responseHeaders.add("SERVICE_MESSAGE", unee.getMessage());
+            re = new ResponseEntity<>(user, responseHeaders, HttpStatus.FORBIDDEN);
+        }
+
+        return re;
+    }
+
+    @RequestMapping(value = "/get", method = RequestMethod.POST, produces = "application/json")
     ResponseEntity<?> get(@RequestBody User user,  @RequestHeader HttpHeaders headers) {
 
         log.info("Login User : " + user);
@@ -59,19 +105,15 @@ public class UserController {
         HttpHeaders responseHeaders = new HttpHeaders();
         try {
             user = userRepository.get(user);
-            log.info("Login OK : " + user);
-            responseHeaders.add("LOGIN_MESSAGE", "OK");
+            user.setPassword("");
+            log.info("User found : " + user);
+            responseHeaders.add("SERVICE_MESSAGE", "FOUND");
             re = new ResponseEntity<>(user, responseHeaders, HttpStatus.OK);
         }
         catch (UserNotFoundException unee)    {
-            log.info("Login NOT FOUND : " + user);
-            responseHeaders.add("LOGIN_MESSAGE", unee.getMessage());
+            log.info("User NOT FOUND : " + user);
+            responseHeaders.add("SERVICE_MESSAGE", unee.getMessage());
             re = new ResponseEntity<>(user, responseHeaders, HttpStatus.NOT_FOUND);
-        }
-        catch (IncorrectPasswordException unee)    {
-            log.info("Login BAD PASSWORD : " + user);
-            responseHeaders.add("LOGIN_MESSAGE", unee.getMessage());
-            re = new ResponseEntity<>(user, responseHeaders, HttpStatus.FORBIDDEN);
         }
 
         return re;
@@ -87,11 +129,11 @@ public class UserController {
 
         try {
             userRepository.update(user);
-            responseHeaders.add("LOGIN_MESSAGE", "UPDATED OK");
+            responseHeaders.add("SERVICE_MESSAGE", "UPDATED OK");
             re = new ResponseEntity<>(user, responseHeaders, HttpStatus.OK);
         }
         catch (Exception e)    {
-            responseHeaders.add("LOGIN_MESSAGE", e.getMessage());
+            responseHeaders.add("SERVICE_MESSAGE", e.getMessage());
             re = new ResponseEntity<>(user, responseHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
