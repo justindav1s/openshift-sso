@@ -30,13 +30,16 @@ RESPONSE=$(curl -svk \
     ${KEYCLOAK}/auth/realms/${REALM}/protocol/openid-connect/token)
 
 echo ""
+REFRESH_TOKEN=$(echo ${RESPONSE} | jq -r .refresh_token)
+echo ${REFRESH_TOKEN} > ${USER}.rt.txt
 ACCESS_TOKEN=$(echo ${RESPONSE} | jq -r .access_token)
+echo ${ACCESS_TOKEN} > ${USER}.at.txt
 PART2_BASE64=$(echo ${ACCESS_TOKEN} | cut -d"." -f2)
 PART2_BASE64=$(padBase64 ${PART2_BASE64})
 echo ${PART2_BASE64} | base64 -D | jq .
 
 
-./decodeToken.sh ${ACCESS_TOKEN}
+#./decodeToken.sh ${ACCESS_TOKEN}
 
 curl -v -H "Authorization: Bearer ${ACCESS_TOKEN}
 " http://localhost:8081/products/all
