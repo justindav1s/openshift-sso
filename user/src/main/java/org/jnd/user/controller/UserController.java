@@ -78,18 +78,20 @@ public class UserController {
         ResponseEntity re = null;
         HttpHeaders responseHeaders = new HttpHeaders();
         try {
-            user = userRepository.login(user);
+            User loggedInUser = userRepository.login(user);
             log.info("Login OK : " + user);
             responseHeaders.add("SERVICE_MESSAGE", "OK");
-            re = new ResponseEntity<>(user, responseHeaders, HttpStatus.OK);
+            re = new ResponseEntity<>(loggedInUser, responseHeaders, HttpStatus.OK);
         }
         catch (UserNotFoundException unee)    {
             log.info("Login NOT FOUND : " + user);
+            user = new User(user.getUsername());
             responseHeaders.add("SERVICE_MESSAGE", unee.getMessage());
             re = new ResponseEntity<>(user, responseHeaders, HttpStatus.NOT_FOUND);
         }
         catch (IncorrectPasswordException unee)    {
             log.info("Login BAD PASSWORD : " + user);
+            user = new User(user.getUsername());
             responseHeaders.add("SERVICE_MESSAGE", unee.getMessage());
             re = new ResponseEntity<>(user, responseHeaders, HttpStatus.FORBIDDEN);
         }

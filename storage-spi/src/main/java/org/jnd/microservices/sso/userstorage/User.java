@@ -98,4 +98,12 @@ public class User implements Serializable {
     public void setGroups(ArrayList groups) {
         this.groups = groups;
     }
+
+    public boolean isValid()    {
+        boolean isValid = false;
+        if ( (this.getFirstname() != null) &&  (this.getLastname() != null) )   {
+            isValid = true;
+        }
+        return isValid;
+    }
 }

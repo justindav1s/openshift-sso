@@ -36,6 +36,15 @@ public class User implements Serializable {
         this.id = UUID.randomUUID().toString();
     }
 
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public User(String username) {
+        this.username = username;
+    }
+
     public User() {
     }
 

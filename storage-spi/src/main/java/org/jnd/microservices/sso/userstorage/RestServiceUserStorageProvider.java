@@ -17,7 +17,7 @@
 
 package org.jnd.microservices.sso.userstorage;
 
-import org.keycloak.common.util.EnvUtil;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.keycloak.component.ComponentModel;
 import org.keycloak.credential.CredentialInput;
 import org.keycloak.credential.CredentialInputUpdater;
@@ -26,7 +26,7 @@ import org.keycloak.credential.CredentialModel;
 import org.keycloak.models.*;
 import org.keycloak.storage.StorageId;
 import org.keycloak.storage.UserStorageProvider;
-import org.keycloak.storage.adapter.AbstractUserAdapterFederatedStorage;
+import org.keycloak.storage.adapter.AbstractUserAdapter;
 import org.keycloak.storage.user.UserLookupProvider;
 import org.keycloak.storage.user.UserQueryProvider;
 import org.keycloak.storage.user.UserRegistrationProvider;
@@ -62,7 +62,7 @@ public class RestServiceUserStorageProvider implements
         User queryUser = new User(username);
         UserModel usermodel = null;
         User user = userServiceProxy.getUser(queryUser);
-        if (user != null)   {
+        if (user != null && user.isValid())   {
             usermodel = createUserModel(realm, user);
         }
         return usermodel;
@@ -71,7 +71,16 @@ public class RestServiceUserStorageProvider implements
 
     protected UserModel createUserModel(RealmModel realm, final User user) {
         System.out.println("UserLookupProvider : createUserModel : " + user);
-        return new AbstractUserAdapterFederatedStorage(session, realm, model) {
+        List<GroupModel> groups = realm.getGroups();
+
+
+        System.out.println("Groups : "+ ReflectionToStringBuilder.toString(groups));
+        System.out.println("Groups size : "+ groups.size());
+
+        final GroupModel customergroup;
+
+
+        AbstractUserAdapter abstractUser = new AbstractUserAdapter(session, realm, model) {
             @Override
             public String getUsername() {
                 return user.getUsername();
@@ -111,7 +120,21 @@ public class RestServiceUserStorageProvider implements
             public void setEmail(String email) {
                 user.setEmail(email);
             }
+
+            @Override
+            public Set<GroupModel> getGroups()  {
+                Set<GroupModel> groupset = new HashSet<>();
+                for (GroupModel group : realm.getGroups()) {
+                    if (group.getName().equals("customer")) {
+                        groupset.add(group);
+                    }
+                }
+                return groupset;
+            }
+
         };
+
+        return abstractUser;
     }
 
     @Override
@@ -295,7 +318,7 @@ public class RestServiceUserStorageProvider implements
         User user = new User(username, password);
         User loggedInUser = userServiceProxy.loginUser(user);
 
-        if (loggedInUser != null)
+        if ((loggedInUser != null) && loggedInUser.isValid())
             isValid = true;
 
         return isValid;

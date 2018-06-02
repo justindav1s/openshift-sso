@@ -5,6 +5,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 public class UserServiceProxy {
@@ -21,16 +22,22 @@ public class UserServiceProxy {
 
         System.out.println("UserServiceProxy : getUser : " + user.getUsername());
 
-        HttpEntity<User> request = new HttpEntity<>(user);
+        try {
+            HttpEntity<User> request = new HttpEntity<>(user);
 
-        ResponseEntity<User> exchange =
-                this.restTemplate.exchange(
-                        base_url + "/user/get",
-                        HttpMethod.POST,
-                        request,
-                        User.class);
+            ResponseEntity<User> exchange =
+                    this.restTemplate.exchange(
+                            base_url + "/user/get",
+                            HttpMethod.POST,
+                            request,
+                            User.class);
 
-        user = exchange.getBody();
+            user = exchange.getBody();
+        }
+        catch (HttpClientErrorException hcee)   {
+            //do nothing this user does not exist, the 404 causes the exception to be thrown
+            System.out.println("UserServiceProxy : getUser  : NOT FOUND : " + user.getUsername());
+        }
         return user;
     }
 
@@ -38,17 +45,23 @@ public class UserServiceProxy {
 
         System.out.println("UserServiceProxy : login : " + user.getUsername());
 
-        HttpEntity<User> request = new HttpEntity<>(user);
+        try {
+            HttpEntity<User> request = new HttpEntity<>(user);
 
-        ResponseEntity<User> exchange =
-                this.restTemplate.exchange(
-                        base_url + "/user/login",
-                        HttpMethod.POST,
-                        request,
-                        User.class);
+            ResponseEntity<User> exchange =
+                    this.restTemplate.exchange(
+                            base_url + "/user/login",
+                            HttpMethod.POST,
+                            request,
+                            User.class);
 
-        user = exchange.getBody();
+            user = exchange.getBody();
+        }
+        catch (HttpClientErrorException hcee)   {
+            System.out.println("UserServiceProxy : login  : NOT FOUND/BAD PASSWORD : " + user.getUsername());
+        }
 
+        System.out.println("UserServiceProxy : after login : " + user.toString());
         return user;
     }
 
