@@ -24,6 +24,8 @@ import org.keycloak.credential.CredentialInputUpdater;
 import org.keycloak.credential.CredentialInputValidator;
 import org.keycloak.credential.CredentialModel;
 import org.keycloak.models.*;
+import org.keycloak.models.cache.CachedUserModel;
+import org.keycloak.models.cache.OnUserCache;
 import org.keycloak.storage.StorageId;
 import org.keycloak.storage.UserStorageProvider;
 import org.keycloak.storage.adapter.AbstractUserAdapter;
@@ -39,7 +41,8 @@ public class RestServiceUserStorageProvider implements
         CredentialInputValidator,
         CredentialInputUpdater,
         UserRegistrationProvider,
-        UserQueryProvider {
+        UserQueryProvider,
+        OnUserCache {
 
     public static final String UNSET_PASSWORD="#$!-UNSET-PASSWORD";
     protected KeycloakSession session;
@@ -49,10 +52,17 @@ public class RestServiceUserStorageProvider implements
     private UserServiceProxy userServiceProxy;
 
     public RestServiceUserStorageProvider(KeycloakSession session, ComponentModel model, String base_url) {
+        System.out.println("RestServiceUserStorageProvider Constructor.");
         this.session = session;
         this.model = model;
         this.base_url = base_url;
         userServiceProxy = new UserServiceProxy(base_url);
+    }
+
+    // OnUserCache method
+    @Override
+    public void onCache(RealmModel realmModel, CachedUserModel cachedUserModel, UserModel userModel) {
+        System.out.println("RestServiceUserStorageProvider onCache.");
     }
 
     // UserLookupProvider methods
@@ -130,6 +140,16 @@ public class RestServiceUserStorageProvider implements
                     }
                 }
                 return groupset;
+            }
+
+            @Override
+            public Map<String,List<String>> getAttributes() {
+                Map<String,List<String>> attributes = new HashMap<String,List<String>>();
+                List<String> values = new ArrayList<>();
+                Date now = new Date();
+                values.add(now.toString());
+                attributes.put("LAST_LOGIN", values);
+                return attributes;
             }
 
         };
@@ -307,7 +327,6 @@ public class RestServiceUserStorageProvider implements
     @Override
     public boolean isValid(RealmModel realm, UserModel usermodel, CredentialInput input) {
         System.out.println("CredentialInputValidator : isValid");
-
         if (!supportsCredentialType(input.getType()) || !(input instanceof UserCredentialModel)) return false;
 
         boolean isValid = false;
@@ -357,4 +376,5 @@ public class RestServiceUserStorageProvider implements
     public void close() {
 
     }
+
 }
