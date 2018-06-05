@@ -289,6 +289,8 @@ public class RestServiceUserStorageProvider implements
     @Override
     public UserModel addUser(RealmModel realm, String username) {
 
+        System.out.println("RestServiceUserStorageProvider : addUser : "+ username);
+
         User user = new User();
         user.setUsername(username);
 

@@ -1,12 +1,20 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head> 
-    <title>My Products</title>
+    <title>Amazin</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-    <p th:text="'Products, ' + ${products} + '!'" />
+<a href="/logout">logout</a>
+<br/>
+<p><a href="/all_products">Check out our Products</a></p>
+<br/>
+
+<b>Categories : </b><br/>
+<div th:each="product_type : ${product_types}">
+    <a href="details.html" th:href="@{/product_type/{product_type}(product_type=${product_type})}" th:text="${product_type}" >A Product</a>
     <br/>
-    <a href="/logout">logout</a>
+</div>
+
 </body>
 </html>

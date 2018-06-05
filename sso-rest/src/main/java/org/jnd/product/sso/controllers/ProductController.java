@@ -41,8 +41,6 @@ public class ProductController {
 
         log.debug("Product get types");
 
-        //this.getB3Headers(headers);
-
         ArrayList<String> types = (ArrayList)repository.getTypes();
 
         log.debug("Product get types : "+types);
@@ -55,8 +53,6 @@ public class ProductController {
     ResponseEntity<Product[]> getProductsOfType(@PathVariable String type, @RequestHeader HttpHeaders headers) {
 
         log.debug("Product get of type :"+type);
-
-        //this.getB3Headers(headers);
 
         ArrayList products = new ArrayList();
         for (Product p : repository.getProducts().values()){

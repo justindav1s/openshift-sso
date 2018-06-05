@@ -1,64 +1,40 @@
-package org.jnd.product.sso.web;
+package org.jnd.product.sso.web.proxy;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jnd.microservices.model.Product;
-import org.jnd.microservices.model.utils.B3HeaderHelper;
+import org.jnd.product.sso.web.utils.LoggingRequestInterceptor;
 import org.keycloak.KeycloakPrincipal;
-import org.keycloak.representations.AccessToken;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
-public class InventoryController {
+@Component
+public class InventoryProxy {
 
-    private Log log = LogFactory.getLog(InventoryController.class);
+    private Log log = LogFactory.getLog(InventoryProxy.class);
 
     @Value( "${inventory.host}" )
     String inventory_host;
 
     private RestTemplate restTemplate = new RestTemplate();;
 
-
-    @GetMapping("/products")
-    public String products(Principal principal, Model model) {
-        log.info(" products(Model model) : "+model);
-        ResponseEntity<List> exchange = this.getAllProducts(principal);
-        model.addAttribute("products", exchange.getBody());
-
-        return "products";
-    }
-
-    @GetMapping("/logout")
-    public String logout(HttpServletRequest request, Principal principal, Model model) {
-        log.info(" logout : "+model);
-
-        try {
-            request.logout();
-        } catch (ServletException e) {
-            e.printStackTrace();
-        }
-
-        return "index";
-    }
-
-    public ResponseEntity<Product> getProduct(String id, HttpHeaders headers) {
+    public ResponseEntity<Product> getProduct(String id, Principal principal) {
 
         log.info("ProductRepositoryProxy get Product id : "+id);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer "+getAccessToken(principal));
 
         ResponseEntity<Product> exchange =
                 this.restTemplate.exchange(
@@ -83,15 +59,8 @@ public class InventoryController {
         interceptors.add(new LoggingRequestInterceptor());
         //restTemplate.setInterceptors(interceptors);
 
-        KeycloakPrincipal kPrinciple = (KeycloakPrincipal)principal;
-        String accesstoken = ((KeycloakPrincipal)principal).getKeycloakSecurityContext().getTokenString();
-        String idtoken = ((KeycloakPrincipal)principal).getKeycloakSecurityContext().getIdTokenString();
-
-        log.info("ID Token : "+idtoken);
-        log.info("Access Token : "+accesstoken);
-
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer "+accesstoken);
+        headers.add("Authorization", "Bearer "+getAccessToken(principal));
 
         log.info(" getAllProducts Enter");
 
@@ -113,7 +82,10 @@ public class InventoryController {
         return exchange;
     }
 
-    public ResponseEntity<List> getProductsofType(String type, HttpHeaders headers) {
+    public ResponseEntity<List> getProductsofType(Principal principal, String type) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer "+getAccessToken(principal));
 
         ResponseEntity<List> exchange =
                 this.restTemplate.exchange(
@@ -132,8 +104,10 @@ public class InventoryController {
         return exchange;
     }
 
-    public ResponseEntity<List> getProductTypes(HttpHeaders headers) {
+    public ResponseEntity<List> getProductTypes(Principal principal) {
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer "+getAccessToken(principal));
 
         ResponseEntity<List> exchange =
                 this.restTemplate.exchange(
@@ -150,4 +124,11 @@ public class InventoryController {
         return exchange;
     }
 
+
+    public String getAccessToken(Principal principal) {
+        KeycloakPrincipal kPrinciple = (KeycloakPrincipal)principal;
+        String accesstoken = ((KeycloakPrincipal)principal).getKeycloakSecurityContext().getTokenString();
+        log.info("Access Token : "+accesstoken);
+        return accesstoken;
+    }
 }

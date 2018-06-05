@@ -1,4 +1,4 @@
-package org.jnd.product.sso.web;
+package org.jnd.product.sso.web.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;

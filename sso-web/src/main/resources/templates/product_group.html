@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head> 
+    <title th:text="${product_type}">All Products</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<a href="/logout">logout</a>
+<br/>
+<br/>
+<div th:each="product : ${products}">
+    <a href="details.html" th:href="@{/product/{id}(id=${product.id})}" th:text="${product.name}" >A Product</a>
+    <br/>
+</div>
+
+
+</body>
+</html>

@@ -54,7 +54,7 @@ public class UserController {
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json")
     ResponseEntity<?> create(@RequestBody User user, @RequestHeader HttpHeaders headers) {
 
-        log.debug("User register");
+        log.info("User register");
 
         ResponseEntity re = null;
         HttpHeaders responseHeaders = new HttpHeaders();
