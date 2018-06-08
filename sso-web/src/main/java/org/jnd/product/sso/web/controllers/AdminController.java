@@ -26,17 +26,4 @@ public class AdminController {
         
     }
 
-    @GetMapping("/logout")
-    public String logout(HttpServletRequest request, Principal principal, Model model) {
-        log.info(" logout : "+model);
-
-        try {
-            request.logout();
-        } catch (ServletException e) {
-            e.printStackTrace();
-        }
-
-        return "index";
-    }
-
 }

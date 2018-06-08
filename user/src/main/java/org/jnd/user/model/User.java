@@ -12,10 +12,10 @@ import java.util.UUID;
 
 @Indices({
         @Index(value = "username", type = IndexType.Unique),
+        @Index(value = "id", type = IndexType.Unique),
         @Index(value = "lastname", type = IndexType.NonUnique)
 })
 public class User implements Serializable {
-
 
     private String id;
     private String firstname;

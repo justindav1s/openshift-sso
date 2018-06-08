@@ -3,6 +3,7 @@ package org.jnd.microservices.sso.userstorage;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.UUID;
 
 
@@ -15,7 +16,8 @@ public class User implements Serializable {
     private String email;
     private String username;
     private String password;
-    private ArrayList groups;
+    private HashSet groups = new HashSet();
+    private HashSet roles= new HashSet();
 
     public User(String username, String password, String firstname, String lastname, String email) {
         this.username = username;
@@ -23,7 +25,6 @@ public class User implements Serializable {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
-        this.setGroups(new ArrayList<String>());
         this.id = UUID.randomUUID().toString();
     }
 
@@ -91,12 +92,20 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public ArrayList getGroups() {
+    public HashSet getGroups() {
         return groups;
     }
 
-    public void setGroups(ArrayList groups) {
+    public void setGroups(HashSet groups) {
         this.groups = groups;
+    }
+
+    public HashSet getRoles() {
+        return roles;
+    }
+
+    public void setRoles(HashSet roles) {
+        this.roles = roles;
     }
 
     public boolean isValid()    {

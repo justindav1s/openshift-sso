@@ -91,6 +91,10 @@ public class UserRepository{
         User candidateUser = repository.find(eq("username", user.getUsername())).firstOrDefault();
 
         if (candidateUser == null)  {
+            candidateUser = repository.find(eq("id", user.getId())).firstOrDefault();
+        }
+
+        if (candidateUser == null)  {
             throw new UserNotFoundException("User not found.");
         }
         return candidateUser;
