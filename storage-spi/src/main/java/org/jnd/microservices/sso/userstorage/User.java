@@ -92,7 +92,7 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public HashSet getGroups() {
+    public HashSet<String> getGroups() {
         return groups;
     }
 
@@ -100,7 +100,7 @@ public class User implements Serializable {
         this.groups = groups;
     }
 
-    public HashSet getRoles() {
+    public HashSet<String> getRoles() {
         return roles;
     }
 

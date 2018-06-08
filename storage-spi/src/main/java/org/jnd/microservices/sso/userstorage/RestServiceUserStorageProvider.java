@@ -18,19 +18,14 @@
 package org.jnd.microservices.sso.userstorage;
 
 import lombok.extern.jbosslog.JBossLog;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.keycloak.component.ComponentModel;
 import org.keycloak.credential.CredentialInput;
 import org.keycloak.credential.CredentialInputUpdater;
 import org.keycloak.credential.CredentialInputValidator;
 import org.keycloak.credential.CredentialModel;
 import org.keycloak.models.*;
-import org.keycloak.models.cache.CachedUserModel;
-import org.keycloak.models.cache.OnUserCache;
-import org.keycloak.models.utils.DefaultRoles;
 import org.keycloak.storage.StorageId;
 import org.keycloak.storage.UserStorageProvider;
-import org.keycloak.storage.adapter.AbstractUserAdapter;
 import org.keycloak.storage.user.UserLookupProvider;
 import org.keycloak.storage.user.UserQueryProvider;
 import org.keycloak.storage.user.UserRegistrationProvider;
@@ -66,7 +61,8 @@ public class RestServiceUserStorageProvider implements
         System.out.println(this + " : UserLookupProvider : getUserByUsername : " + username);
         User user = new User();
         user.setUsername(username);
-        return new UserAdapter(this.session, realm, this.model, user);
+        user = userServiceProxy.getUser(user);
+        return new FederatedUserAdapter(this.session, realm, this.model, user);
     }
 
     @Override
@@ -76,7 +72,8 @@ public class RestServiceUserStorageProvider implements
         String externalid = storageId.getExternalId();
         User user = new User();
         user.setId(externalid);
-        return new UserAdapter(this.session, realm, this.model, user);
+        user = userServiceProxy.getUser(user);
+        return new FederatedUserAdapter(this.session, realm, this.model, user);
     }
 
     @Override
@@ -115,7 +112,7 @@ public class RestServiceUserStorageProvider implements
 
         users = Arrays.copyOfRange(users, firstResult, (firstResult+maxResults));
         for (User user : users) {
-            UserModel usermodel = new UserAdapter(this.session, realm, this.model, user);
+            UserModel usermodel = new FederatedUserAdapter(this.session, realm, this.model, user);
             usermodels.add(usermodel);
         }
 
@@ -203,7 +200,7 @@ public class RestServiceUserStorageProvider implements
         User user = new User();
         user.setUsername(username);
 
-        return new UserAdapter(this.session, realm, this.model, user);
+        return new FederatedUserAdapter(this.session, realm, this.model, user);
     }
 
     @Override
@@ -221,7 +218,7 @@ public class RestServiceUserStorageProvider implements
 
     @Override
     public boolean isConfiguredFor(RealmModel realm, UserModel user, String credentialType) {
-        System.out.println("CredentialInputValidator : isConfiguredFor : " + credentialType);
+        //System.out.println("CredentialInputValidator : isConfiguredFor : " + credentialType);
         boolean configuredFor = false;
 
         if (credentialType.equals(CredentialModel.PASSWORD))
@@ -232,7 +229,7 @@ public class RestServiceUserStorageProvider implements
 
     @Override
     public boolean supportsCredentialType(String credentialType) {
-        System.out.println("CredentialInputValidator : supportsCredentialType : " + credentialType);
+        //System.out.println("CredentialInputValidator : supportsCredentialType : " + credentialType);
         return credentialType.equals(CredentialModel.PASSWORD);
     }
 

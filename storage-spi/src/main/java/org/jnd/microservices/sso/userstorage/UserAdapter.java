@@ -1,64 +1,117 @@
 package org.jnd.microservices.sso.userstorage;
 
 import org.keycloak.component.ComponentModel;
-import org.keycloak.models.KeycloakSession;
-import org.keycloak.models.RealmModel;
-import org.keycloak.storage.StorageId;
-import org.keycloak.storage.adapter.AbstractUserAdapterFederatedStorage;
+import org.keycloak.models.*;
+import org.keycloak.models.utils.DefaultRoles;
+import org.keycloak.storage.adapter.AbstractUserAdapter;
 
-public class UserAdapter extends AbstractUserAdapterFederatedStorage {
+import java.util.*;
 
-    private final User user;
-    private final String keycloakId;
+public class UserAdapter {
 
-    public UserAdapter(KeycloakSession session, RealmModel realm, ComponentModel model, User user) {
-        super(session, realm, model);
-        this.user = user;
-        this.keycloakId = StorageId.keycloakId(model, user.getId());
-    }
+    protected static UserModel createUserModel(RealmModel realm, KeycloakSession session, ComponentModel model, final User user) {
+        System.out.println("UserAdapter : createUserModel : " + user);
+        List<GroupModel> groups = realm.getGroups();
 
-    @Override
-    public String getId() {
-        return keycloakId;
-    }
 
-    @Override
-    public String getUsername() {
-        return user.getUsername();
-    }
+        final GroupModel customergroup;
 
-    @Override
-    public void setUsername(String username) {
-        user.setUsername(username);
-    }
 
-    @Override
-    public String getEmail() {
-        return user.getEmail();
-    }
+        AbstractUserAdapter abstractUser = new AbstractUserAdapter(session, realm, model) {
+            @Override
+            public String getUsername() {
+                return user.getUsername();
+            }
 
-    @Override
-    public void setEmail(String email) {
-        user.setEmail(email);
-    }
+            @Override
+            public void setUsername(String username) {
+                user.setUsername(username);
+            }
 
-    @Override
-    public String getFirstName() {
-        return user.getFirstname();
-    }
+            @Override
+            public String getFirstName() {
+                return user.getFirstname();
+            }
 
-    @Override
-    public void setFirstName(String firstName) {
-        user.setFirstname(firstName);
-    }
+            @Override
+            public void setFirstName(String firstName) {
+                user.setFirstname(firstName);
+            }
 
-    @Override
-    public String getLastName() {
-        return user.getLastname();
-    }
+            @Override
+            public String getLastName() {
+                return user.getLastname();
+            }
 
-    @Override
-    public void setLastName(String lastName) {
-        user.setLastname(lastName);
+            @Override
+            public void setLastName(String lastName) {
+                user.setLastname(lastName);
+            }
+
+            @Override
+            public String getEmail() {
+                return user.getEmail();
+            }
+
+            @Override
+            public void setEmail(String email) {
+                user.setEmail(email);
+            }
+
+            @Override
+            public Set<GroupModel> getGroups()  {
+                Set<GroupModel> groupset = new HashSet<>();
+                for (GroupModel group : realm.getGroups()) {
+                    for (String groupName : user.getGroups()) {
+                        if (group.getName().equals("customer")) {
+                            groupset.add(group);
+                        }
+                    }
+                }
+                return groupset;
+            }
+
+            @Override
+            public Map<String,List<String>> getAttributes() {
+                Map<String,List<String>> attributes = new HashMap<String,List<String>>();
+                List<String> values = new ArrayList<>();
+                Date now = new Date();
+                values.add(now.toString());
+                attributes.put("LAST_LOGIN", values);
+                return attributes;
+            }
+
+            @Override
+            public  void grantRole(RoleModel role) {
+                System.out.println("UserAdapter : grantRole : "+role.getName());
+                user.getRoles().add(role.getName());
+            }
+
+            @Override
+            public  Set<RoleModel> getRoleMappings() {
+                System.out.println("UserAdapter : getRoleMappings");
+                Set<RoleModel> rmset = new HashSet<>();
+                for (String userrole : user.getRoles()) {
+                    for (RoleModel rm : realm.getRoles()) {
+                        if (rm.getName().equals(userrole)) {
+                            rmset.add(rm);
+                        }
+                    }
+                }
+                for (RoleModel role : rmset)  {
+                    System.out.println("UserAdapter : getRoleMappings : "+role.getName());
+                }
+                return rmset;
+            }
+
+            @Override
+            public  void deleteRoleMapping(RoleModel role) {
+                System.out.println("UserAdapter : deleteRoleMapping : "+ role.getName());
+                user.getRoles().remove(role);
+            }
+
+        };
+
+        return abstractUser;
     }
 }
