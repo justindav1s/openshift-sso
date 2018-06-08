@@ -11,6 +11,8 @@ public class FederatedUserAdapter extends AbstractUserAdapterFederatedStorage {
     private final User user;
     private final String keycloakId;
 
+    private static final org.jboss.logging.Logger log = org.jboss.logging.Logger.getLogger(RestServiceUserStorageProvider.class);
+
     public FederatedUserAdapter(KeycloakSession session, RealmModel realm, ComponentModel model, User user) {
         super(session, realm, model);
         this.user = user;
@@ -24,13 +26,13 @@ public class FederatedUserAdapter extends AbstractUserAdapterFederatedStorage {
 
     @Override
     public String getUsername() {
-        System.out.println("FederatedUserAdapter : getUsername : "+ user.getUsername());
+        log.info("FederatedUserAdapter : getUsername : "+ user.getUsername());
         return user.getUsername();
     }
 
     @Override
     public void setUsername(String username) {
-        System.out.println("FederatedUserAdapter : setUsername : "+ username);
+        log.info("FederatedUserAdapter : setUsername : "+ username);
         user.setUsername(username);
     }
 

@@ -18,9 +18,11 @@ public class UserServiceProxy {
 
     private RestTemplate restTemplate = new RestTemplate();
 
+    private static final org.jboss.logging.Logger log = org.jboss.logging.Logger.getLogger(RestServiceUserStorageProvider.class);
+
     public User getUser(User user) {
 
-        System.out.println("UserServiceProxy : getUser : " + user.getUsername());
+        log.info("UserServiceProxy : getUser : " + user.getUsername());
 
         try {
             HttpEntity<User> request = new HttpEntity<>(user);
@@ -36,14 +38,14 @@ public class UserServiceProxy {
         }
         catch (HttpClientErrorException hcee)   {
             //do nothing this user does not exist, the 404 causes the exception to be thrown
-            System.out.println("UserServiceProxy : getUser  : NOT FOUND : " + user.getUsername());
+            log.info("UserServiceProxy : getUser  : NOT FOUND : " + user.getUsername());
         }
         return user;
     }
 
     public User loginUser(User user) {
 
-        System.out.println("UserServiceProxy : login : " + user.getUsername());
+        log.info("UserServiceProxy : login : " + user.getUsername());
 
         try {
             HttpEntity<User> request = new HttpEntity<>(user);
@@ -58,16 +60,16 @@ public class UserServiceProxy {
             user = exchange.getBody();
         }
         catch (HttpClientErrorException hcee)   {
-            System.out.println("UserServiceProxy : login  : NOT FOUND/BAD PASSWORD : " + user.getUsername());
+            log.info("UserServiceProxy : login  : NOT FOUND/BAD PASSWORD : " + user.getUsername());
         }
 
-        System.out.println("UserServiceProxy : after login : " + user.toString());
+        log.info("UserServiceProxy : after login : " + user.toString());
         return user;
     }
 
     public User register(User user) {
 
-        System.out.println("UserServiceProxy : register");
+        log.info("UserServiceProxy : register");
 
         HttpEntity<User> request = new HttpEntity<>(user);
 
@@ -84,7 +86,7 @@ public class UserServiceProxy {
 
     public User[] getAllUsers() {
 
-        System.out.println("UserServiceProxy : getAllUsers");
+        log.info("UserServiceProxy : getAllUsers");
 
         ResponseEntity<User[]> exchange =
                 this.restTemplate.exchange(
@@ -93,7 +95,7 @@ public class UserServiceProxy {
                         null,
                         new ParameterizedTypeReference<User[]>() {});
 
-        System.out.println("All Users : "+exchange.getBody());
+        log.info("All Users : "+exchange.getBody());
 
         User[] users = exchange.getBody();
 
@@ -102,7 +104,7 @@ public class UserServiceProxy {
 
     public int getUsersCount() {
 
-        System.out.println("UserServiceProxy : getUsersCount");
+        log.info("UserServiceProxy : getUsersCount");
 
         ResponseEntity<Integer> exchange =
                 this.restTemplate.exchange(
@@ -111,7 +113,7 @@ public class UserServiceProxy {
                         null,
                         new ParameterizedTypeReference<Integer>() {});
 
-        System.out.println("User Count : "+exchange.getBody());
+        log.info("User Count : "+exchange.getBody());
 
         int count = exchange.getBody();
 

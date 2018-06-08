@@ -9,8 +9,10 @@ import java.util.*;
 
 public class UserAdapter {
 
+    private static final org.jboss.logging.Logger log = org.jboss.logging.Logger.getLogger(RestServiceUserStorageProvider.class);
+
     protected static UserModel createUserModel(RealmModel realm, KeycloakSession session, ComponentModel model, final User user) {
-        System.out.println("UserAdapter : createUserModel : " + user);
+        log.info("UserAdapter : createUserModel : " + user);
         List<GroupModel> groups = realm.getGroups();
 
 
@@ -83,13 +85,13 @@ public class UserAdapter {
 
             @Override
             public  void grantRole(RoleModel role) {
-                System.out.println("UserAdapter : grantRole : "+role.getName());
+                log.info("UserAdapter : grantRole : "+role.getName());
                 user.getRoles().add(role.getName());
             }
 
             @Override
             public  Set<RoleModel> getRoleMappings() {
-                System.out.println("UserAdapter : getRoleMappings");
+                log.info("UserAdapter : getRoleMappings");
                 Set<RoleModel> rmset = new HashSet<>();
                 for (String userrole : user.getRoles()) {
                     for (RoleModel rm : realm.getRoles()) {
@@ -99,14 +101,14 @@ public class UserAdapter {
                     }
                 }
                 for (RoleModel role : rmset)  {
-                    System.out.println("UserAdapter : getRoleMappings : "+role.getName());
+                    log.info("UserAdapter : getRoleMappings : "+role.getName());
                 }
                 return rmset;
             }
 
             @Override
             public  void deleteRoleMapping(RoleModel role) {
-                System.out.println("UserAdapter : deleteRoleMapping : "+ role.getName());
+                log.info("UserAdapter : deleteRoleMapping : "+ role.getName());
                 user.getRoles().remove(role);
             }
 

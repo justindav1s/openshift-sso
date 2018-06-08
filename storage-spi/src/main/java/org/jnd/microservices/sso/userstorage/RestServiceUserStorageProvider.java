@@ -46,8 +46,10 @@ public class RestServiceUserStorageProvider implements
     protected ComponentModel model;
     private UserServiceProxy userServiceProxy;
 
+    private static final org.jboss.logging.Logger log = org.jboss.logging.Logger.getLogger(RestServiceUserStorageProvider.class);
+
     public RestServiceUserStorageProvider(KeycloakSession session, ComponentModel model, String base_url) {
-        System.out.println(this + " : RestServiceUserStorageProvider Constructor.");
+        log.info(this + " : RestServiceUserStorageProvider Constructor.");
         this.session = session;
         this.model = model;
         this.base_url = base_url;
@@ -58,7 +60,7 @@ public class RestServiceUserStorageProvider implements
     // UserLookupProvider methods
     @Override
     public UserModel getUserByUsername(String username, RealmModel realm) {
-        System.out.println(this + " : UserLookupProvider : getUserByUsername : " + username);
+        log.info(this + " : UserLookupProvider : getUserByUsername : " + username);
         User user = new User();
         user.setUsername(username);
         user = userServiceProxy.getUser(user);
@@ -67,7 +69,7 @@ public class RestServiceUserStorageProvider implements
 
     @Override
     public UserModel getUserById(String id, RealmModel realm) {
-        System.out.println("UserLookupProvider : getUserById");
+        log.info("UserLookupProvider : getUserById");
         StorageId storageId = new StorageId(id);
         String externalid = storageId.getExternalId();
         User user = new User();
@@ -79,7 +81,7 @@ public class RestServiceUserStorageProvider implements
     @Override
     public UserModel getUserByEmail(String email, RealmModel realm)
     {
-        System.out.println("UserLookupProvider : getUserByEmail");
+        log.info("UserLookupProvider : getUserByEmail");
         return null;
     }
 
@@ -87,7 +89,7 @@ public class RestServiceUserStorageProvider implements
     @Override
     public int getUsersCount(RealmModel realm) {
 
-        System.out.println("UserQueryProvider : getUsersCount");
+        log.info("UserQueryProvider : getUsersCount");
         int count = userServiceProxy.getUsersCount();
         System.out.println("UserQueryProvider : getUsersCount : " + count);
         return count;
@@ -97,13 +99,13 @@ public class RestServiceUserStorageProvider implements
 
     @Override
     public List<UserModel> getUsers(RealmModel realm) {
-        System.out.println(this + " : UserQueryProvider : getUsers(RealmModel realm)");
+        log.info(this + " : UserQueryProvider : getUsers(RealmModel realm)");
         return getUsers(realm, 0, Integer.MAX_VALUE);
     }
 
     @Override
     public List<UserModel> getUsers(RealmModel realm, int firstResult, int maxResults) {
-        System.out.println(this + " : UserQueryProvider : getUsers(RealmModel realm, int firstResult : "+firstResult+" int maxResults : "+maxResults+")");
+        log.info(this + " : UserQueryProvider : getUsers(RealmModel realm, int firstResult : "+firstResult+" int maxResults : "+maxResults+")");
         User[] users = userServiceProxy.getAllUsers();
         List<UserModel> usermodels = new ArrayList<UserModel>();
 
@@ -123,13 +125,13 @@ public class RestServiceUserStorageProvider implements
 
     @Override
     public List<UserModel> searchForUser(String search, RealmModel realm) {
-        System.out.println("UserQueryProvider : searchForUser(String search, RealmModel realm)");
+        log.info("UserQueryProvider : searchForUser(String search, RealmModel realm)");
         return searchForUser(search, realm, 0, Integer.MAX_VALUE);
     }
 
     @Override
     public List<UserModel> searchForUser(String search, RealmModel realm, int firstResult, int maxResults) {
-        System.out.println("UserQueryProvider : searchForUser(String search, RealmModel realm, int firstResult, int maxResults)");
+        log.info("UserQueryProvider : searchForUser(String search, RealmModel realm, int firstResult, int maxResults)");
         List<UserModel> usermodels = new LinkedList<>();
         List<UserModel> users = session.users().getUsers(realm, false);
         for (UserModel user : users) {
@@ -142,15 +144,15 @@ public class RestServiceUserStorageProvider implements
 
     @Override
     public List<UserModel> searchForUser(Map<String, String> params, RealmModel realm) {
-        System.out.println("UserQueryProvider : searchForUser(Map<String, String> params, RealmModel realm)");
-        System.out.println("UserQueryProvider : params : "+ params);
+        log.info("UserQueryProvider : searchForUser(Map<String, String> params, RealmModel realm)");
+        log.info("UserQueryProvider : params : "+ params);
         return searchForUser(params, realm, 0, Integer.MAX_VALUE);
     }
 
     @Override
     public List<UserModel> searchForUser(Map<String, String> params, RealmModel realm, int firstResult, int maxResults) {
-        System.out.println("UserQueryProvider : searchForUser(Map<String, String> params, RealmModel realm, int firstResult, int maxResults)");
-        System.out.println("UserQueryProvider : params : "+ params);
+        log.info("UserQueryProvider : searchForUser(Map<String, String> params, RealmModel realm, int firstResult, int maxResults)");
+        log.info("UserQueryProvider : params : "+ params);
 
         // only support searching by username
         String usernameSearchString = params.get("username");
@@ -195,7 +197,7 @@ public class RestServiceUserStorageProvider implements
     @Override
     public UserModel addUser(RealmModel realm, String username) {
 
-        System.out.println("RestServiceUserStorageProvider : addUser : "+ username);
+        log.info("RestServiceUserStorageProvider : addUser : "+ username);
 
         User user = new User();
         user.setUsername(username);
@@ -206,7 +208,7 @@ public class RestServiceUserStorageProvider implements
     @Override
     public boolean removeUser(RealmModel realm, UserModel user) {
         // call service to remove user
-        System.out.println("RestServiceUserStorageProvider : removeUser : "+ user.getUsername());
+        log.info("RestServiceUserStorageProvider : removeUser : "+ user.getUsername());
         return true;
     }
 
@@ -235,7 +237,7 @@ public class RestServiceUserStorageProvider implements
 
     @Override
     public boolean isValid(RealmModel realm, UserModel usermodel, CredentialInput input) {
-        System.out.println("CredentialInputValidator : isValid");
+        log.info("CredentialInputValidator : isValid");
         if (!supportsCredentialType(input.getType()) || !(input instanceof UserCredentialModel)) return false;
 
         boolean isValid = false;
