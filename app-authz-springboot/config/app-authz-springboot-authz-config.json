@@ -1,0 +1,130 @@
+{
+  "allowRemoteResourceManagement": false,
+  "policyEnforcementMode": "ENFORCING",
+  "resources": [
+    {
+      "name": "Protected Resource",
+      "uri": "/protected/*"
+    },
+    {
+      "name": "Premium Resource",
+      "uri": "/protected/premium/*"
+    },
+    {
+      "name": "Default Resource",
+      "uri": "/*"
+    },
+    {
+      "name": "User Resource",
+      "type": "user-resource"
+    },
+    {
+      "name": "Alice Resource",
+      "uri": "/protected/alice",
+      "type": "user-resource",
+      "owner": {
+        "name": "alice"
+      },
+      "typedScopes": []
+    }
+  ],
+  "policies": [
+    {
+      "name": "Only Premium User Policy",
+      "type": "role",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "roles": "[{\"id\":\"user-premium\",\"required\":false}]"
+      }
+    },
+    {
+      "name": "Default Policy",
+      "description": "A policy that grants access only for users within this realm",
+      "type": "js",
+      "logic": "POSITIVE",
+      "decisionStrategy": "AFFIRMATIVE",
+      "config": {
+        "code": "// by default, grants any permission associated with this policy\n$evaluation.grant();\n"
+      }
+    },
+    {
+      "name": "Only User Policy",
+      "type": "role",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "roles": "[{\"id\":\"user\",\"required\":false}]"
+      }
+    },
+    {
+      "name": "Only Owner Policy",
+      "type": "js",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "code": "var context = $evaluation.getContext();\nvar permission = $evaluation.getPermission();\nvar resource = permission.getResource();\nvar identity = context.getIdentity();\n\nif (identity.id == resource.owner) {\n    $evaluation.grant();\n}"
+      }
+    },
+    {
+      "name": "ip_policy",
+      "type": "js",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "code": "var context = $evaluation.getContext();\nvar contextAttributes = context.getAttributes();\n\nfunction readFully(url) {\n    var result = \"\";\n    var imports = new JavaImporter(java.net, java.lang, java.io);\n\n    with (imports) {\n\n        var urlObj = null;\n\n        try {\n            urlObj = new URL(url);\n        } catch (e) {\n            // If the URL cannot be built, assume it is a file path.\n            urlObj = new URL(new File(url).toURI().toURL());\n        }\n\n        var reader = new BufferedReader(new InputStreamReader(urlObj.openStream()));\n\n        var line = reader.readLine();\n        while (line != null) {\n            result += line + \"\\n\";\n            line = reader.readLine();\n        }\n\n        reader.close();\n    }\n\n    return result;\n}\n\n\nvar ip_addresses = readFully('ip_addresses.txt');\nprint(ip_addresses)\n\nif (contextAttributes.containsValue('kc.client.network.ip_address', '127.0.0.1')) {\n    print('OK')\n    $evaluation.grant();\n}"
+      }
+    },
+    {
+      "name": "Default Resource Permission",
+      "type": "resource",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "resources": "[\"Default Resource\"]",
+        "applyPolicies": "[\"Default Policy\"]"
+      }
+    },
+    {
+      "name": "Premium Resource Permission",
+      "type": "resource",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "resources": "[\"Premium Resource\"]",
+        "applyPolicies": "[\"Only Premium User Policy\"]"
+      }
+    },
+    {
+      "name": "Protected Resource Permission",
+      "type": "resource",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "resources": "[\"Protected Resource\"]",
+        "applyPolicies": "[\"Only User Policy\"]"
+      }
+    },
+    {
+      "name": "User Resource Permission",
+      "type": "resource",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "defaultResourceType": "user-resource",
+        "applyPolicies": "[\"Only Owner Policy\"]"
+      }
+    },
+    {
+      "name": "ip_permission",
+      "type": "resource",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "resources": "[\"Protected Resource\"]",
+        "applyPolicies": "[\"ip_policy\"]"
+      }
+    }
+  ],
+  "scopes": []
+}
