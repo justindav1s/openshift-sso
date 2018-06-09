@@ -1,0 +1,28 @@
+import org.keycloak.authorization.policy.evaluation.Evaluation;
+import org.keycloak.authorization.policy.evaluation.EvaluationContext;
+import org.keycloak.authorization.attribute.Attributes;
+
+import org.jnd.microservices.rules.Utils;
+
+rule "Authorize Resource Owner By Source IP Address"
+    dialect "java"
+    when
+       $evaluation : Evaluation(
+           $context : context,
+           $attributes : context.attributes,
+           $identity: context.identity,
+           $permission: permission,
+           $permission.resource != null
+       )
+    then
+        Utils.logmessage( "Drools Policy Firing !" );
+
+        Utils.logContext($context);
+        Utils.logIdentity($identity);
+        Utils.logPermission($permission);
+        if (Utils.validateRequest($identity, $context))
+            $evaluation.grant();
+        else
+            $evaluation.deny();
+
+end
