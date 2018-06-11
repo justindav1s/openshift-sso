@@ -34,6 +34,7 @@ public class IPValidationController {
             re = new ResponseEntity<>(address, responseHeaders, HttpStatus.NOT_FOUND);
         }
 
+        log.info("validated : " + address.getAddress()+" : " + address.isGranted());
         return re;
     }
 }

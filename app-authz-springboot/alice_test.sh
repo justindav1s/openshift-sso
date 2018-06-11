@@ -36,6 +36,6 @@ PART2_BASE64=$(padBase64 ${PART2_BASE64})
 echo ${PART2_BASE64} | base64 -D | jq .
 
 
-curl -sv -H "Authorization: Bearer ${ACCESS_TOKEN}" http://localhost:8070/protected/alice
+curl -sv -H "Authorization: Bearer ${ACCESS_TOKEN}" http://localhost:8070/protected
 
 

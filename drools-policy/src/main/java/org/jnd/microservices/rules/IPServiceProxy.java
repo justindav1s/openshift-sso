@@ -1,11 +1,13 @@
 package org.jnd.microservices.rules;
 
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
+import org.jboss.resteasy.client.jaxrs.ResteasyClient;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
+
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
 
 public class IPServiceProxy {
 
@@ -15,34 +17,12 @@ public class IPServiceProxy {
         this.base_url = base_url;
     }
 
-    private RestTemplate restTemplate = new RestTemplate();
-
-    private static final org.jboss.logging.Logger log = org.jboss.logging.Logger.getLogger(IPServiceProxy.class);
-
     public IPAddress validate(IPAddress address) {
+        ResteasyClient client = new ResteasyClientBuilder().build();
+        ResteasyWebTarget target = client.target(UriBuilder.fromPath(this.base_url+"/ip/validate"));
+        Response response = target.request().post(Entity.entity(address, MediaType.APPLICATION_JSON_TYPE));
+        IPAddress validatedIP = response.readEntity(IPAddress.class);
+        return validatedIP;
 
-        log.info("IPServiceProxy : validate address : " + address.getAddress());
-
-        try {
-
-            HttpEntity<IPAddress> request = new HttpEntity(address);
-
-            ResponseEntity<IPAddress> exchange =
-                    this.restTemplate.exchange(
-                            base_url + "/ip/validate",
-                            HttpMethod.POST,
-                            request,
-                            IPAddress.class);
-
-            address = exchange.getBody();
-
-        }
-        catch (HttpClientErrorException hcee)   {
-            //do nothing this user does not exist, the 404 causes the exception to be thrown
-            log.info("IPServiceProxy address not valid : " + address.getAddress());
-        }
-
-        return address;
     }
-
 }

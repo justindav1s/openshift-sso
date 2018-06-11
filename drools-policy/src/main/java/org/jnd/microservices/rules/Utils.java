@@ -7,7 +7,6 @@ import org.keycloak.authorization.permission.ResourcePermission;
 import org.keycloak.authorization.policy.evaluation.EvaluationContext;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -64,11 +63,12 @@ public class Utils {
     public static boolean validateRequest(Identity id, EvaluationContext ec){
         String ip = ec.getAttributes().getValue("kc.client.network.ip_address").asString(0);
         String owner = id.getAttributes().getValue("preferred_username").asString(0);
-        log.info("Validating IP : "+ip+" for user : "+owner);
+        log.info("RESTEASY Client Validating IP : "+ip+" for user : "+owner);
         IPAddress ipaddress = new IPAddress(owner, ip);
 
         IPServiceProxy proxy = new IPServiceProxy("http://127.0.0.1:8090");
         ipaddress = proxy.validate(ipaddress);
+        log.info("RESTEASY Client Validated IP : "+ip+" for user : "+owner+" valid : "+ipaddress.isGranted());
         return ipaddress.isGranted();
     }
 
