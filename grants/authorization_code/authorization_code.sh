@@ -20,7 +20,6 @@ CLIENT_SECRET="d464f8e8-248c-4e75-b225-3382bb2a0ceb"
 USER="test_user2"
 USER_PASSWORD="123456"
 
-echo "Keycloak host : $KEYCLOAK"
 
 #Get Code
 GET_BODY="scope=openid&response_type=code&client_id=${CLIENT}&redirect_uri=http://127.0.0.1:9090/getcode"
@@ -36,6 +35,8 @@ CODE=`echo ${LOC} | awk -F'[=&]' '{print $4}' | tr -cd "[:print:]\n"`
 
 echo "CODE"=${CODE}
 echo ${#CODE}
+
+
 
 #Get Token
 POST_BODY="grant_type=${GRANT_TYPE}&redirect_uri=http://127.0.0.1:9090/getcode&client_id=${CLIENT}&client_secret=${CLIENT_SECRET}&code="
