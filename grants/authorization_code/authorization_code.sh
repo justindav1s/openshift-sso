@@ -13,14 +13,27 @@ function padBase64  {
 
 
 KEYCLOAK=http://127.0.0.1:8080
-REALM="test"
+REALM="demo"
 GRANT_TYPE="authorization_code"
-CLIENT="web-login"
-CLIENT_SECRET="2dde44a5-2c3f-4461-93a8-1faf9754b7f0"
+CLIENT="web-app-client"
+CLIENT_SECRET="d464f8e8-248c-4e75-b225-3382bb2a0ceb"
+USER="test_user2"
+USER_PASSWORD="123456"
 
 echo "Keycloak host : $KEYCLOAK"
 
-CODE=$1
+#Get Code
+GET_BODY="scope=openid&response_type=code&client_id=${CLIENT}&redirect_uri=http://127.0.0.1:9090/getcode"
+
+RESPONSE=$(curl -vk -D headers.txt \
+    -u ${USER}:${USER_PASSWORD} \
+    -X GET \
+    ${KEYCLOAK}/auth/realms/${REALM}/protocol/openid-connect/auth?${GET_BODY})
+
+LOC=$(grep Location headers.txt)
+rm -rf headers.txt
+CODE=`echo ${LOC} | awk -F'[=&]' '{print $4}' | tr -cd "[:print:]\n"`
+
 echo "CODE"=${CODE}
 echo ${#CODE}
 

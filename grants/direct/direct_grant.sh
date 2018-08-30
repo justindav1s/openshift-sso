@@ -13,11 +13,11 @@ function padBase64  {
 
 
 KEYCLOAK=http://127.0.0.1:8080
-REALM="test"
+REALM="demo"
 GRANT_TYPE="password"
-CLIENT="web-login"
-CLIENT_SECRET="2dde44a5-2c3f-4461-93a8-1faf9754b7f0"
-USER="justin"
+CLIENT="web-app-client"
+CLIENT_SECRET="d464f8e8-248c-4e75-b225-3382bb2a0ceb"
+USER="test_user2"
 USER_PASSWORD="123456"
 
 echo "Keycloak host : $KEYCLOAK"
