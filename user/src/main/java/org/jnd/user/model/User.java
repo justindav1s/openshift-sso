@@ -25,8 +25,9 @@ public class User implements Serializable {
     private String username;
     private String password;
     private ArrayList groups;
+    private String ipaddress;
 
-    public User(String username, String password, String firstname, String lastname, String email) {
+    public User(String username, String password, String firstname, String lastname, String email, String ipaddress) {
         this.username = username;
         this.password = password;
         this.firstname = firstname;
@@ -106,5 +107,13 @@ public class User implements Serializable {
 
     public void setGroups(ArrayList groups) {
         this.groups = groups;
+    }
+
+    public String getIpaddress() {
+        return ipaddress;
+    }
+
+    public void setIpaddress(String ipaddress) {
+        this.ipaddress = ipaddress;
     }
 }

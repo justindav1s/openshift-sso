@@ -44,8 +44,9 @@ public class UserRepository{
 
         repository = db.getRepository(User.class);
 
-        User justin = new User("justin", "123456", "Justin", "Davis", "justin@email.com");
-        User superman = new User("superman", "lois", "Clark", "Kent", "bird@plane.com");
+        User justin = new User("justin", "123456", "Justin", "Davis", "justin@email.com", "127.0.0.1");
+
+        User superman = new User("superman", "lois", "Clark", "Kent", "bird@plane.com", "127.0.0.1");
 
         try {
             repository.insert(justin, superman);
@@ -93,6 +94,16 @@ public class UserRepository{
         if (candidateUser == null)  {
             candidateUser = repository.find(eq("id", user.getId())).firstOrDefault();
         }
+
+        if (candidateUser == null)  {
+            throw new UserNotFoundException("User not found.");
+        }
+        return candidateUser;
+    }
+
+    public User get(String username) throws UserNotFoundException{
+
+        User candidateUser = repository.find(eq("username", username)).firstOrDefault();
 
         if (candidateUser == null)  {
             throw new UserNotFoundException("User not found.");

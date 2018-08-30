@@ -8,9 +8,10 @@ target/
 /target/
 # Compiled class file
 *.class
-
+*.cer
 # Log file
 *.log
+*.key
 
 # BlueJ files
 *.ctxt
@@ -29,3 +30,4 @@ target/
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+/deploy_keycloak/datr.eu.cer
