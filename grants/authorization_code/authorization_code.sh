@@ -21,7 +21,7 @@ USER="test_user2"
 USER_PASSWORD="123456"
 
 
-#Get Code
+#Get Code : performed by App
 GET_BODY="scope=openid&response_type=code&client_id=${CLIENT}&redirect_uri=http://127.0.0.1:9090/getcode"
 
 RESPONSE=$(curl -vk -D headers.txt \
@@ -38,7 +38,7 @@ echo ${#CODE}
 
 
 
-#Get Token
+#Get Token : performed by Thirdparty
 POST_BODY="grant_type=${GRANT_TYPE}&redirect_uri=http://127.0.0.1:9090/getcode&client_id=${CLIENT}&client_secret=${CLIENT_SECRET}&code="
 POST_BODY=${POST_BODY}${CODE}
 echo POST_BODY=${POST_BODY}
