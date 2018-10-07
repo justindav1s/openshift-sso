@@ -1,0 +1,77 @@
+/opt/eap/standalone/configuration/standalone-openshift.xml
+
+
+/usr/lib/jvm/java-1.8.0/bin/java \
+        -D[Standalone] \
+        -server \
+        -verbose:gc \
+        -Xloggc:/opt/eap/standalone/log/gc.log \
+        -XX:+PrintGCDetails -XX:+PrintGCDateStamps \
+        -XX:+UseGCLogFileRotation \
+        -XX:NumberOfGCLogFiles=5 \
+        -XX:GCLogFileSize=3M \
+        -XX:-TraceClassUnloading \
+        -Xms128m \
+        -Xmx512m \
+        -XX:MetaspaceSize=96M \
+        -XX:MaxMetaspaceSize=256m \
+        -Djava.net.preferIPv4Stack=true \
+        -Djboss.modules.system.pkgs=org.jboss.logmanager,jdk.nashorn.api,com.sun.crypto.provider \
+        -Djava.awt.headless=true \
+        -XX:+UnlockExperimentalVMOptions \
+        -XX:+UseCGroupMemoryLimitForHeap \
+        -XX:+UseParallelOldGC \
+        -XX:MinHeapFreeRatio=10 \
+        -XX:MaxHeapFreeRatio=20 \
+        -XX:GCTimeRatio=4 \
+        -XX:AdaptiveSizePolicyWeight=90 \
+        -XX:+ExitOnOutOfMemoryError \
+        -Djava.security.egd=file:/dev/./urandom \
+        -javaagent:/opt/jolokia/jolokia.jar=config=/opt/jolokia/etc/jolokia.properties \
+        -Xbootclasspath/p:/opt/eap/jboss-modules.jar:/opt/eap/modules/system/layers/base/.overlays/layer-base-jboss-eap-7.1.4.CP/org/jboss/logmanager/main/jboss-logmanager-2.0.10.Final-redhat-1.jar:/opt/eap/modules/system/layers/base/org/jboss/logmanager/ext/main/javax.json-1.0.4.jar:/opt/eap/modules/system/layers/base/org/jboss/logmanager/ext/main/jboss-logmanager-ext-1.0.0.Alpha5-redhat-1.jar -Djava.util.logging.manager=org.jboss.logmanager.LogManager -Dorg.jboss.boot.log.file=/opt/eap/standalone/log/server.log -Dlogging.configuration=file:/opt/eap/standalone/configuration/logging.properties \
+        -jar /opt/eap/jboss-modules.jar \
+        -mp /opt/eap/modules org.jboss.as.standalone \
+        -Djboss.home.dir=/opt/eap \
+        -Djboss.server.base.dir=/opt/eap/standalone \
+        -c standalone-openshift.xml \
+        -bmanagement 127.0.0.1 \
+        -b 10.129.0.26 \
+        -bprivate 10.129.0.26 \
+        -Djboss.node.name=sso-1-mldtm
+
+<?xml version="1.0" encoding="UTF-8"?>
+<xa-datasource jndi-name="java:jboss/datasources/KeycloakDS" pool-name="sso_postgresql-DB" use-java-context="true" enabled="true">
+    <xa-datasource-property name="DatabaseName">root</xa-datasource-property>
+    <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+    <xa-datasource-property name="ServerName">172.30.146.45</xa-datasource-property>
+    <driver>postgresql</driver>
+    <xa-pool>
+        <min-pool-size>15</min-pool-size>
+        <max-pool-size>15</max-pool-size>
+    </xa-pool>
+    <security>
+        <user-name>sso</user-name>
+        <password>sso</password>
+    </security>
+    <validation>
+        <validate-on-match>true</validate-on-match>
+        <background-validation>false</background-validation>
+        <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker" />
+        <exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter" />
+    </validation>
+</xa-datasource>
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<datasource jta="false" jndi-name="java:jboss/datasources/KeycloakDSObjectStore" pool-name="sso_postgresqlObjectStorePool" enabled="true">
+<connection-url>jdbc:postgresql://172.30.146.45:5432/root</connection-url>
+<driver>postgresql</driver>
+<pool>
+    <min-pool-size>15</min-pool-size>
+    <max-pool-size>15</max-pool-size>
+</pool>
+<security>
+    <user-name>sso</user-name>
+    <password>sso</password>
+</security>
+</datasource>

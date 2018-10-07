@@ -15,8 +15,7 @@ function padBase64  {
 KEYCLOAK=http://127.0.0.1:8080
 REALM="demo"
 GRANT_TYPE="authorization_code"
-CLIENT="web-app-client"
-CLIENT_SECRET="d464f8e8-248c-4e75-b225-3382bb2a0ceb"
+CLIENT="tpp1"
 USER="test_user2"
 USER_PASSWORD="123456"
 
@@ -36,7 +35,8 @@ CODE=`echo ${LOC} | awk -F'[=&]' '{print $4}' | tr -cd "[:print:]\n"`
 echo "CODE"=${CODE}
 echo ${#CODE}
 
-
+CLIENT=tpp1
+CLIENT_SECRET=b38eae9d-d5ef-4a98-b1e6-6b5084b09d91
 
 #Get Token : performed by Thirdparty
 POST_BODY="grant_type=${GRANT_TYPE}&redirect_uri=http://127.0.0.1:9090/getcode&client_id=${CLIENT}&client_secret=${CLIENT_SECRET}&code="
