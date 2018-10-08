@@ -12,16 +12,16 @@ function padBase64  {
 }
 
 
-KEYCLOAK=http://127.0.0.1:8080
-REALM="demo"
+KEYCLOAK=https://sso.datr.eu:8443
+REALM="PSD2"
 GRANT_TYPE="password"
-CLIENT="web-app-client"
-CLIENT_SECRET="d464f8e8-248c-4e75-b225-3382bb2a0ceb"
+CLIENT="kbci"
+CLIENT_SECRET="c22faa6a-778d-4076-96bc-dce205292e63"
 USER="test_user2"
 USER_PASSWORD="123456"
 
 echo "Keycloak host : $KEYCLOAK"
-
+echo "Full URL : ${KEYCLOAK}/auth/realms/${REALM}/protocol/openid-connect/token"
 
 #Get Token
 POST_BODY="grant_type=${GRANT_TYPE}&client_id=${CLIENT}&client_secret=${CLIENT_SECRET}&username=${USER}&password=${USER_PASSWORD}"
@@ -40,6 +40,14 @@ PART2_BASE64=$(echo ${ACCESS_TOKEN} | cut -d"." -f2)
 PART2_BASE64=$(padBase64 ${PART2_BASE64})
 echo ${PART2_BASE64} | base64 -D | jq .
 
+echo VALIDATE VALID TOKEN
+echo ACCESS_TOKEN=${ACCESS_TOKEN}
+curl -u "${CLIENT}:${CLIENT_SECRET}" -d "token=${ACCESS_TOKEN}" "${KEYCLOAK}/auth/realms/$REALM/protocol/openid-connect/token/introspect"
+echo ""
+echo "VALIDATE INVALID TOKEN"
+ACCESS_TOKEN="this_is_a_nonsense_token"
+echo ACCESS_TOKEN=${ACCESS_TOKEN}
+curl -v -u "${CLIENT}:${CLIENT_SECRET}" -d "token=${ACCESS_TOKEN}" "${KEYCLOAK}/auth/realms/$REALM/protocol/openid-connect/token/introspect"
 
 
 
