@@ -35,6 +35,8 @@ CODE=`echo ${LOC} | awk -F'[=&]' '{print $4}' | tr -cd "[:print:]\n"`
 echo "CODE"=${CODE}
 echo ${#CODE}
 
+# Wait for Auth code to time out ?
+
 CLIENT=tpp1
 CLIENT_SECRET=b38eae9d-d5ef-4a98-b1e6-6b5084b09d91
 
