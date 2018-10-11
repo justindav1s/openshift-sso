@@ -1,0 +1,98 @@
+dn: dc=datr,dc=eu
+objectclass: top
+objectclass: domain
+dc: datr
+description: Justin's Datr company
+
+dn: ou=people,dc=datr,dc=eu
+objectclass: top
+objectclass: organizationalUnit
+ou: people
+description: People involved with Justin's Datr company
+
+dn: ou=groups,dc=datr,dc=eu
+objectclass: top
+objectclass: organizationalUnit
+ou: groups
+description: Fictional example organizational unit
+
+dn: uid=justindav1s,ou=people,dc=datr,dc=eu
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Justin Davis
+sn: Davis
+givenname: Justin
+uid: justindav1s
+ou: people
+description: The Boss
+telephonenumber: 07958 684070
+userpassword: {SSHA}7ubtO7WwTlFOW+0orVN8xKTlp+XMHZX
+
+dn: uid=superman,ou=people,dc=datr,dc=eu
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Super Man
+sn: Man
+givenname: Super
+uid: superman
+ou: people
+description: He Flies
+telephonenumber: 07958 55566
+userpassword: {SSHA}7ubtO7WwTlFOW+0orVN8xKTlp+XMHZX
+
+dn: cn=June Rossi,ou=people,dc=datr,dc=eu
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: June Rossi
+sn: Rossi
+givenName: June
+mail: rossi@example.com
+userPassword: {SSHA}7ubtO7WwTlFOW+0orVN8xKTlp+XMHZX
+ou: Accounting
+ou: people
+telephoneNumber: 2616
+roomNumber: 220
+
+dn: cn=Marc Chambers,ou=people,dc=datr,dc=eu
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: Marc Chambers
+sn: Chambers
+givenName: Marc
+mail: chambers@example.com
+userPassword: {SSHA}7ubtO7WwTlFOW+0orVN8xKTlp+XMHZX
+telephoneNumber: 2652
+ou: Manufacturing
+ou: People
+roomNumber: 167
+
+dn: cn=Robert Wong,ou=people,dc=datr,dc=eu
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: Robert Wong
+cn: Bob Wong
+sn: Wong
+givenName: Robert
+givenName: Bob
+mail: bwong@example.com
+userPassword: {SSHA}7ubtO7WwTlFOW+0orVN8xKTlp+XMHZX
+telephoneNumber: 2881
+roomNumber: 211
+ou: Manufacturing
+ou: people
+
+dn: ou=groups,dc=datr,dc=eu
+objectclass: top
+objectclass: organizationalUnit
+ou: groups
+description: Fictional example organizational unit

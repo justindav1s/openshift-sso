@@ -29,7 +29,7 @@ RESPONSE=$(curl -vk -D headers.txt \
     ${KEYCLOAK}/auth/realms/${REALM}/protocol/openid-connect/auth?${GET_BODY})
 
 LOC=$(grep Location headers.txt)
-rm -rf headers.txt
+#rm -rf headers.txt
 CODE=`echo ${LOC} | awk -F'[=&]' '{print $4}' | tr -cd "[:print:]\n"`
 
 echo "CODE"=${CODE}
