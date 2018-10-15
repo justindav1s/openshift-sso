@@ -55,7 +55,7 @@ mail: justin@example.com
 telephonenumber: 07958 684070
 userpassword: 12jnd34
 
-dn: cn:=Super Man,ou=people,dc=datr,dc=eu
+dn: cn=Super Man,ou=people,dc=datr,dc=eu
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
@@ -134,5 +134,5 @@ objectclass: top
 objectclass: groupOfNames
 member: cn=Marc Chambers,ou=people,dc=datr,dc=eu
 member: cn=June Rossi,ou=people,dc=datr,dc=eu
-member: cn:=Super Man,ou=people,dc=datr,dc=eu
+member: cn=Super Man,ou=people,dc=datr,dc=eu
 cn: Customers
