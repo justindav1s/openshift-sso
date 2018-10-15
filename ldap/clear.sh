@@ -9,7 +9,7 @@ tac dns.txt > snd.txt
 
 while read dn;
 do
-    echo $dn;
+    echo Deleting : $dn;
     ldapdelete -w ${PASSWORD} -D "cn=ldapadm,dc=datr,dc=eu" $dn
 done < snd.txt
 
