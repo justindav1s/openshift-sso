@@ -10,11 +10,29 @@ objectclass: organizationalUnit
 ou: people
 description: People involved with Justin's Datr company
 
-dn: ou=groups,dc=datr,dc=eu
+dn: ou=leadership,dc=datr,dc=eu
 objectclass: top
 objectclass: organizationalUnit
-ou: groups
-description: Fictional example organizational unit
+ou: leadership
+description: Leadership Group
+
+dn: ou=superhero,dc=datr,dc=eu
+objectclass: top
+objectclass: organizationalUnit
+ou: superhero
+description: Superhero Group
+
+dn: ou=accounting,dc=datr,dc=eu
+objectclass: top
+objectclass: organizationalUnit
+ou: accounting
+description: Accounting Group
+
+dn: ou=marketing,dc=datr,dc=eu
+objectclass: top
+objectclass: organizationalUnit
+ou: marketing
+description: Marketing Group
 
 dn: uid=justindav1s,ou=people,dc=datr,dc=eu
 objectclass: top
@@ -25,8 +43,10 @@ cn: Justin Davis
 sn: Davis
 givenname: Justin
 uid: justindav1s
+ou: leadership
 ou: people
 description: The Boss
+mail: justin@example.com
 telephonenumber: 07958 684070
 userpassword: {SSHA}7ubtO7WwTlFOW+0orVN8xKTlp+XMHZX
 
@@ -39,12 +59,14 @@ cn: Super Man
 sn: Man
 givenname: Super
 uid: superman
+ou: superhero
 ou: people
 description: He Flies
+mail: clarke@example.com
 telephonenumber: 07958 55566
 userpassword: {SSHA}7ubtO7WwTlFOW+0orVN8xKTlp+XMHZX
 
-dn: cn=June Rossi,ou=people,dc=datr,dc=eu
+dn: uid=rossi,ou=people,dc=datr,dc=eu
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson
@@ -52,14 +74,16 @@ objectClass: inetOrgPerson
 cn: June Rossi
 sn: Rossi
 givenName: June
-mail: rossi@example.com
-userPassword: {SSHA}7ubtO7WwTlFOW+0orVN8xKTlp+XMHZX
-ou: Accounting
+uid: rossi
+ou: accounting
 ou: people
-telephoneNumber: 2616
-roomNumber: 220
+description: Manager
+mail: rossi@example.com
+telephonenumber: 07958 55777
+userPassword: {SSHA}7ubtO7WwTlFOW+0orVN8xKTlp+XMHZX
 
-dn: cn=Marc Chambers,ou=people,dc=datr,dc=eu
+
+dn: uid=marc,ou=people,dc=datr,dc=eu
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson
@@ -67,32 +91,27 @@ objectClass: inetOrgPerson
 cn: Marc Chambers
 sn: Chambers
 givenName: Marc
+uid: marc
+ou: marketing
+ou: people
+description: Marketing Manager
 mail: chambers@example.com
+telephonenumber: 07958 55566
 userPassword: {SSHA}7ubtO7WwTlFOW+0orVN8xKTlp+XMHZX
-telephoneNumber: 2652
-ou: Manufacturing
-ou: People
-roomNumber: 167
 
-dn: cn=Robert Wong,ou=people,dc=datr,dc=eu
+
+dn: uid=wong,ou=people,dc=datr,dc=eu
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson
 objectClass: inetOrgPerson
 cn: Robert Wong
-cn: Bob Wong
 sn: Wong
 givenName: Robert
-givenName: Bob
-mail: bwong@example.com
-userPassword: {SSHA}7ubtO7WwTlFOW+0orVN8xKTlp+XMHZX
-telephoneNumber: 2881
-roomNumber: 211
-ou: Manufacturing
+uid: wong
+ou: marketing
 ou: people
-
-dn: ou=groups,dc=datr,dc=eu
-objectclass: top
-objectclass: organizationalUnit
-ou: groups
-description: Fictional example organizational unit
+description: Product Manager
+mail: bwong@example.com
+telephonenumber: 555 55566
+userPassword: {SSHA}7ubtO7WwTlFOW+0orVN8xKTlp+XMHZX

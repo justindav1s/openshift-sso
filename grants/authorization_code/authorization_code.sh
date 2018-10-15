@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# This script requires jq, a command line to to parse and format JSon.
+# https://stedolan.github.io/jq/
+
 function padBase64  {
     STR=$1
     MOD=$((${#STR}%4))
@@ -29,18 +32,17 @@ RESPONSE=$(curl -vk -D headers.txt \
     ${KEYCLOAK}/auth/realms/${REALM}/protocol/openid-connect/auth?${GET_BODY})
 
 LOC=$(grep Location headers.txt)
-#rm -rf headers.txt
+rm -rf headers.txt
 CODE=`echo ${LOC} | awk -F'[=&]' '{print $4}' | tr -cd "[:print:]\n"`
 
 echo "CODE"=${CODE}
 echo ${#CODE}
 
-# Wait for Auth code to time out ?
 
-CLIENT=tpp1
-CLIENT_SECRET=b38eae9d-d5ef-4a98-b1e6-6b5084b09d91
 
 #Get Token : performed by Thirdparty
+CLIENT=tpp1
+CLIENT_SECRET=b38eae9d-d5ef-4a98-b1e6-6b5084b09d91
 POST_BODY="grant_type=${GRANT_TYPE}&redirect_uri=http://127.0.0.1:9090/getcode&client_id=${CLIENT}&client_secret=${CLIENT_SECRET}&code="
 POST_BODY=${POST_BODY}${CODE}
 echo POST_BODY=${POST_BODY}
