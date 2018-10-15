@@ -53,7 +53,6 @@ ou: people
 description: The Boss
 mail: justin@example.com
 telephonenumber: 07958 684070
-userpassword: 12jnd34
 
 dn: cn=Super Man,ou=people,dc=datr,dc=eu
 objectclass: top
@@ -69,7 +68,6 @@ ou: people
 description: He Flies
 mail: clarke@example.com
 telephonenumber: 07958 55566
-userpassword: {SSHA}7ubtO7WwTlFOW+0orVN8xKTlp+XMHZX
 
 dn: cn=June Rossi,ou=people,dc=datr,dc=eu
 objectClass: top
@@ -85,8 +83,6 @@ ou: people
 description: Manager
 mail: rossi@example.com
 telephonenumber: 07958 55777
-userPassword: {SSHA}7ubtO7WwTlFOW+0orVN8xKTlp+XMHZX
-
 
 dn: cn=Marc Chambers,ou=people,dc=datr,dc=eu
 objectClass: top
@@ -102,8 +98,6 @@ ou: people
 description: Marketing Manager
 mail: chambers@example.com
 telephonenumber: 07958 55566
-userPassword: {SSHA}7ubtO7WwTlFOW+0orVN8xKTlp+XMHZX
-
 
 dn: cn=Robert Wong,ou=people,dc=datr,dc=eu
 objectClass: top
@@ -119,7 +113,6 @@ ou: people
 description: Product Manager
 mail: bwong@example.com
 telephonenumber: 555 55566
-userPassword: {SSHA}7ubtO7WwTlFOW+0orVN8xKTlp+XMHZX
 
 dn: cn=Administrators,ou=Groups,dc=datr,dc=eu
 objectclass: top
