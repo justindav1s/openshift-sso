@@ -156,3 +156,22 @@ dn: cn=Customers,ou=Groups,dc=datr,dc=eu
 changetype: modify
 add: member
 member: cn=Cat Woman,ou=people,dc=datr,dc=eu
+
+dn: ou=RealmRoles,dc=datr,dc=eu
+objectclass: top
+objectclass: organizationalUnit
+ou: RealmRoles
+
+dn: cn=view,ou=RealmRoles,dc=datr,dc=eu
+objectclass: top
+objectclass: groupOfNames
+cn: view
+member: cn=June Rossi,ou=people,dc=datr,dc=eu
+member: cn=Super Man,ou=people,dc=datr,dc=eu
+
+dn: cn=edit,ou=RealmRoles,dc=datr,dc=eu
+objectclass: top
+objectclass: groupOfNames
+cn: edit
+member: cn=Robert Wong,ou=people,dc=datr,dc=eu
+member: cn=Justin Davis,ou=people,dc=datr,dc=eu
