@@ -129,7 +129,6 @@ member: cn=Justin Davis,ou=people,dc=datr,dc=eu
 cn: Administrators
 
 dn: cn=Customers,ou=Groups,dc=example,dc=com
-changetype: add
 objectclass: top
 objectclass: groupOfNames
 member: cn=Marc Chambers,ou=people,dc=datr,dc=eu
