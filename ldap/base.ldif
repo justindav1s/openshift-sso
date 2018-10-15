@@ -48,7 +48,7 @@ ou: people
 description: The Boss
 mail: justin@example.com
 telephonenumber: 07958 684070
-userpassword: {SSHA}7ubtO7WwTlFOW+0orVN8xKTlp+XMHZX
+userpassword: 12jnd34
 
 dn: uid=superman,ou=people,dc=datr,dc=eu
 objectclass: top
