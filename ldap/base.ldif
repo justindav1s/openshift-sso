@@ -135,3 +135,20 @@ member: cn=Marc Chambers,ou=people,dc=datr,dc=eu
 member: cn=June Rossi,ou=people,dc=datr,dc=eu
 member: cn=Super Man,ou=people,dc=datr,dc=eu
 cn: Customers
+
+dn: cn=Cat Woman,ou=people,dc=datr,dc=eu
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: Cat Woman
+sn: Woman
+givenName: Cat
+uid: cat
+ou: marketing
+ou: people
+description: SuperHeroine
+mail: cat@example.com
+telephonenumber: 555 55566
+userPassword: {SSHA}7ubtO7WwTlFOW+0orVN8xKTlp+XMHZX
+memberOf: cn=Customers,ou=Groups,dc=datr,dc=eu
