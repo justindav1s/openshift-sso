@@ -32,3 +32,4 @@ target/
 hs_err_pid*
 /deploy_keycloak/datr.eu.cer
 /deploy_keycloak/datr.eu_publickey.pem
+/grants/authorization_code/headers.txt
