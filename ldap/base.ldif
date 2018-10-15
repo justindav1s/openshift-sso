@@ -151,4 +151,8 @@ description: SuperHeroine
 mail: cat@example.com
 telephonenumber: 555 55566
 userPassword: {SSHA}7ubtO7WwTlFOW+0orVN8xKTlp+XMHZX
-memberOf: cn=Customers,ou=Groups,dc=datr,dc=eu
+
+dn: cn=Customers,ou=Groups,dc=datr,dc=eu
+changetype: modify
+add: member
+member: cn=Cat Woman,ou=people,dc=datr,dc=eu
