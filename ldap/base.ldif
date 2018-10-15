@@ -4,6 +4,11 @@ objectclass: domain
 dc: datr
 description: Justin's Datr company
 
+dn: ou=Groups,dc=datr,dc=eu
+objectclass: top
+objectclass: organizationalUnit
+ou: Groups
+
 dn: ou=people,dc=datr,dc=eu
 objectclass: top
 objectclass: organizationalUnit
@@ -34,7 +39,7 @@ objectclass: organizationalUnit
 ou: marketing
 description: Marketing Group
 
-dn: uid=justindav1s,ou=people,dc=datr,dc=eu
+dn: cn=Justin Davis,ou=people,dc=datr,dc=eu
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
@@ -50,7 +55,7 @@ mail: justin@example.com
 telephonenumber: 07958 684070
 userpassword: 12jnd34
 
-dn: uid=superman,ou=people,dc=datr,dc=eu
+dn: cn:=Super Man,ou=people,dc=datr,dc=eu
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
@@ -66,7 +71,7 @@ mail: clarke@example.com
 telephonenumber: 07958 55566
 userpassword: {SSHA}7ubtO7WwTlFOW+0orVN8xKTlp+XMHZX
 
-dn: uid=rossi,ou=people,dc=datr,dc=eu
+dn: cn=June Rossi,ou=people,dc=datr,dc=eu
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson
@@ -83,7 +88,7 @@ telephonenumber: 07958 55777
 userPassword: {SSHA}7ubtO7WwTlFOW+0orVN8xKTlp+XMHZX
 
 
-dn: uid=marc,ou=people,dc=datr,dc=eu
+dn: cn=Marc Chambers,ou=people,dc=datr,dc=eu
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson
@@ -100,7 +105,7 @@ telephonenumber: 07958 55566
 userPassword: {SSHA}7ubtO7WwTlFOW+0orVN8xKTlp+XMHZX
 
 
-dn: uid=wong,ou=people,dc=datr,dc=eu
+dn: cn=Robert Wong,ou=people,dc=datr,dc=eu
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson
@@ -115,3 +120,19 @@ description: Product Manager
 mail: bwong@example.com
 telephonenumber: 555 55566
 userPassword: {SSHA}7ubtO7WwTlFOW+0orVN8xKTlp+XMHZX
+
+dn: cn=Administrators,ou=Groups,dc=example,dc=com
+objectclass: top
+objectclass: groupOfNames
+member: cn=Robert Wong,ou=people,dc=datr,dc=eu
+member: cn=Justin Davis,ou=people,dc=datr,dc=eu
+cn: Administrators
+
+dn: cn=Customers,ou=Groups,dc=example,dc=com
+changetype: add
+objectclass: top
+objectclass: groupOfNames
+member: cn=Marc Chambers,ou=people,dc=datr,dc=eu
+member: cn=June Rossi,ou=people,dc=datr,dc=eu
+member: cn:=Super Man,ou=people,dc=datr,dc=eu
+cn: Customers
