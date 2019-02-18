@@ -18,13 +18,14 @@ function padBase64  {
 KEYCLOAK=http://127.0.0.1:8080
 REALM="demo"
 GRANT_TYPE="authorization_code"
-CLIENT="tpp1"
+CLIENT="yolt"
 USER="test_user2"
 USER_PASSWORD="123456"
+REDIRECT_URI="yolt%3A%2F%2Fauthconsent"
 
 
 #Get Code : performed by App
-GET_BODY="scope=openid&response_type=code&client_id=${CLIENT}&redirect_uri=http://127.0.0.1:9090/getcode"
+GET_BODY="scope=openid%20AIS_trans%20AIS_bal&response_type=code&client_id=${CLIENT}&redirect_uri=${REDIRECT_URI}"
 
 RESPONSE=$(curl -vk -D headers.txt \
     -u ${USER}:${USER_PASSWORD} \
@@ -41,9 +42,9 @@ echo ${#CODE}
 
 
 #Get Token : performed by Thirdparty
-CLIENT=tpp1
-CLIENT_SECRET=b38eae9d-d5ef-4a98-b1e6-6b5084b09d91
-POST_BODY="grant_type=${GRANT_TYPE}&redirect_uri=http://127.0.0.1:9090/getcode&client_id=${CLIENT}&client_secret=${CLIENT_SECRET}&code="
+CLIENT=yolt
+CLIENT_SECRET=edd2db87-bb96-4736-9b8d-5dcc9784a8be
+POST_BODY="grant_type=${GRANT_TYPE}&redirect_uri=${REDIRECT_URI}&client_id=${CLIENT}&client_secret=${CLIENT_SECRET}&code="
 POST_BODY=${POST_BODY}${CODE}
 echo POST_BODY=${POST_BODY}
 
@@ -52,8 +53,22 @@ RESPONSE=$(curl -vk \
     -H "Content-Type: application/x-www-form-urlencoded" \
     ${KEYCLOAK}/auth/realms/${REALM}/protocol/openid-connect/token)
 
-echo "RESPONSE"=${RESPONSE}
+echo "********RESPONSE**************"
+
+#echo "RESPONSE"=${RESPONSE}
+echo ${RESPONSE} | jq .
+
+echo "*******ACCESS TOKEN***********"
+
 ACCESS_TOKEN=$(echo ${RESPONSE} | jq -r .access_token)
+PART2_BASE64=$(echo ${ACCESS_TOKEN} | cut -d"." -f2)
+PART2_BASE64=$(padBase64 ${PART2_BASE64})
+echo ${PART2_BASE64} | base64 -D | jq .
+
+echo "********ID TOKEN**************"
+
+#echo "RESPONSE"=${RESPONSE}
+ACCESS_TOKEN=$(echo ${RESPONSE} | jq -r .id_token)
 PART2_BASE64=$(echo ${ACCESS_TOKEN} | cut -d"." -f2)
 PART2_BASE64=$(padBase64 ${PART2_BASE64})
 echo ${PART2_BASE64} | base64 -D | jq .
