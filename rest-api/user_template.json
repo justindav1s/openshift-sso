@@ -1,0 +1,14 @@
+{
+  "username": "",
+  "enabled": true,
+  "totp": false,
+  "emailVerified": false,
+  "firstName": "",
+  "lastName": "",
+  "email": "",
+  "attributes": {
+    "consentid": [
+      ""
+    ]
+  }
+}

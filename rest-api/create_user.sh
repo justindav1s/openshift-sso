@@ -40,46 +40,40 @@ PART2_BASE64=$(echo ${ACCESS_TOKEN} | cut -d"." -f2)
 PART2_BASE64=$(padBase64 ${PART2_BASE64})
 echo ${PART2_BASE64} | base64 -D | jq .
 
+USERNAME=tonyh
+FIRSTNAME=Anthony
+LASTNAME=Hopkins
+EMAIL="tony@email.com"
+CONSENTID=123456
 
-#Get All Users
-RESPONSE=$(curl -vk \
-    -X GET \
-    -H "Authorization: Bearer ${ACCESS_TOKEN}" \
-    ${KEYCLOAK}/auth/admin/realms/${REALM}/users/count)
-
-echo "RESPONSE"=${RESPONSE}
-
-USER=justin
-
-#Get  User
-RESPONSE=$(curl -vk \
-    -X GET \
-    -H "Authorization: Bearer ${ACCESS_TOKEN}" \
-    ${KEYCLOAK}/auth/admin/realms/${REALM}/users?username=${USER})
-
-echo "RESPONSE"=${RESPONSE}
-
-#extract user from the array that is returned
-echo USER = ${USER}
-USERJSON=$(echo ${RESPONSE} | jq -r --arg USER "$USER" '.[] | select(.username==$USER)')
-echo ${USER} = ${USERJSON}
-
-#get userid
-USERID=$(echo ${USERJSON} | jq -r .id)
-echo USERID = ${USERID}
+USERJSON=`cat user_template.json`
+echo USERJSON = ${USERJSON}
 
 #update user's json representation with new consent id
-UPDATEDUSER=$(echo ${USERJSON} | jq '.attributes.consentid[0] = "789"')
-echo UPDATEDUSER = ${UPDATEDUSER}
+USERJSON=$(echo ${USERJSON} | jq  -r --arg USERNAME "$USERNAME" '.username = $USERNAME')
+echo USERJSON = ${USERJSON}
 
-echo ${UPDATEDUSER} > updateduser.json
+USERJSON=$(echo ${USERJSON} | jq  -r --arg FIRSTNAME "$FIRSTNAME" '.firstName = $FIRSTNAME')
+echo USERJSON = ${USERJSON}
+
+USERJSON=$(echo ${USERJSON} | jq  -r --arg LASTNAME "$LASTNAME" '.lastName = $LASTNAME')
+echo USERJSON = ${USERJSON}
+
+USERJSON=$(echo ${USERJSON} | jq  -r --arg EMAIL "$EMAIL" '.email = $EMAIL')
+echo USERJSON = ${USERJSON}
+
+USERJSON=$(echo ${USERJSON} | jq  -r --arg CONSENTID "$CONSENTID" '.attributes.consentid[0] = $CONSENTID')
+echo USERJSON = ${USERJSON}
+
+
+echo ${USERJSON} > createuser.json
 
 #Update user in Keycloak
-RESPONSE=$(echo ${UPDATEDUSER} | curl -vk \
-    -X PUT \
-    --data @updateduser.json \
+RESPONSE=$(curl -vk \
+    -X POST \
+    --data @createuser.json \
     -H "Content-Type: application/json" \
     -H "Authorization: Bearer ${ACCESS_TOKEN}" \
-    ${KEYCLOAK}/auth/admin/realms/${REALM}/users/${USERID})
+    ${KEYCLOAK}/auth/admin/realms/${REALM}/users)
 
 echo "RESPONSE"=${RESPONSE}
