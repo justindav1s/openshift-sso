@@ -53,6 +53,7 @@ ou: people
 description: The Boss
 mail: justin@example.com
 telephonenumber: 07958 684070
+userPassword: {SSHA}R0Q+PIYGyHR+Ho42pyKgYCvx7SWTUFy7
 
 dn: cn=Super Man,ou=people,dc=datr,dc=eu
 objectclass: top

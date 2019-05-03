@@ -61,6 +61,8 @@ public class NewClientController {
         client.setDirectAccessGrantsEnabled(true);
         client.setServiceAccountsEnabled(true);
         client.setStandardFlowEnabled(false);
+        client.setPublicClient(false);
+        client.setSecret("mysecret");
 
         ClientRegistration reg = ClientRegistration.create()
                 .url(baseUrl+"/auth", realm)
@@ -112,6 +114,7 @@ public class NewClientController {
         client.setDirectAccessGrantsEnabled(true);
         client.setServiceAccountsEnabled(true);
         client.setStandardFlowEnabled(false);
+        client.setSecret(tppclient.getClient_secret());
 
         String uri = baseUrl+"/auth/realms/"+realm+"/clients-registrations/default";
         log.info("Client Reg URL : "+uri);

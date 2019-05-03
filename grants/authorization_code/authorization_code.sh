@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# This script requires jq, a command line to to parse and format JSon.
-# https://stedolan.github.io/jq/
-
 function padBase64  {
     STR=$1
     MOD=$((${#STR}%4))
@@ -18,33 +15,31 @@ function padBase64  {
 KEYCLOAK=http://127.0.0.1:8080
 REALM="demo"
 GRANT_TYPE="authorization_code"
-CLIENT="yolt"
-USER="test_user2"
-USER_PASSWORD="123456"
-REDIRECT_URI="yolt%3A%2F%2Fauthconsent"
+CLIENT="client1"
+CLIENT_SECRET="2b8e4f0b-c55f-4fc0-a9dd-1baf08fd3ee5"
+USER="justin"
+USER_PASSWORD="12jnd34"
 
+echo "Keycloak host : $KEYCLOAK"
 
-#Get Code : performed by App
-GET_BODY="scope=openid%20AIS_trans%20AIS_bal&response_type=code&client_id=${CLIENT}&redirect_uri=${REDIRECT_URI}"
+#Get Code
+GET_BODY="scope=openid&response_type=code&client_id=${CLIENT}&redirect_uri=http://127.0.0.1:9090/getcode&&consentid=123"
 
 RESPONSE=$(curl -vk -D headers.txt \
     -u ${USER}:${USER_PASSWORD} \
     -X GET \
     ${KEYCLOAK}/auth/realms/${REALM}/protocol/openid-connect/auth?${GET_BODY})
 
+echo RESPONSE=$RESPONSE
 LOC=$(grep Location headers.txt)
-rm -rf headers.txt
+#rm -rf headers.txt
 CODE=`echo ${LOC} | awk -F'[=&]' '{print $4}' | tr -cd "[:print:]\n"`
 
 echo "CODE"=${CODE}
 echo ${#CODE}
 
-
-
-#Get Token : performed by Thirdparty
-CLIENT=yolt
-CLIENT_SECRET=edd2db87-bb96-4736-9b8d-5dcc9784a8be
-POST_BODY="grant_type=${GRANT_TYPE}&redirect_uri=${REDIRECT_URI}&client_id=${CLIENT}&client_secret=${CLIENT_SECRET}&code="
+#Get Token
+POST_BODY="grant_type=${GRANT_TYPE}&redirect_uri=http://127.0.0.1:9090/getcode&client_id=${CLIENT}&client_secret=${CLIENT_SECRET}&code="
 POST_BODY=${POST_BODY}${CODE}
 echo POST_BODY=${POST_BODY}
 
@@ -53,22 +48,23 @@ RESPONSE=$(curl -vk \
     -H "Content-Type: application/x-www-form-urlencoded" \
     ${KEYCLOAK}/auth/realms/${REALM}/protocol/openid-connect/token)
 
-echo "********RESPONSE**************"
-
-#echo "RESPONSE"=${RESPONSE}
-echo ${RESPONSE} | jq .
-
-echo "*******ACCESS TOKEN***********"
-
+echo "RESPONSE"=${RESPONSE}
 ACCESS_TOKEN=$(echo ${RESPONSE} | jq -r .access_token)
 PART2_BASE64=$(echo ${ACCESS_TOKEN} | cut -d"." -f2)
 PART2_BASE64=$(padBase64 ${PART2_BASE64})
+echo "ACCESS TOKEN"
 echo ${PART2_BASE64} | base64 -D | jq .
 
-echo "********ID TOKEN**************"
+echo
+ACCESS_TOKEN=$(echo ${RESPONSE} | jq -r .refresh_token)
+PART2_BASE64=$(echo ${ACCESS_TOKEN} | cut -d"." -f2)
+PART2_BASE64=$(padBase64 ${PART2_BASE64})
+echo "REFRESH TOKEN"
+echo ${PART2_BASE64} | base64 -D | jq .
 
-#echo "RESPONSE"=${RESPONSE}
+echo
 ACCESS_TOKEN=$(echo ${RESPONSE} | jq -r .id_token)
 PART2_BASE64=$(echo ${ACCESS_TOKEN} | cut -d"." -f2)
 PART2_BASE64=$(padBase64 ${PART2_BASE64})
+echo "ID TOKEN"
 echo ${PART2_BASE64} | base64 -D | jq .
