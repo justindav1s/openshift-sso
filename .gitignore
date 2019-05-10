@@ -35,3 +35,6 @@ hs_err_pid*
 /grants/authorization_code/headers.txt
 /rest-api/updateduser.json
 /rest-api/createuser.json
+/psd2/users/createuser.json
+/psd2/headers.txt
+/psd2/clients/amazon.json
