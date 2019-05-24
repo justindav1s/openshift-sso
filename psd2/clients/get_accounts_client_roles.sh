@@ -16,11 +16,11 @@ function padBase64  {
 
 echo "********************************************************************************"
 # Get Access Token with Client Credentials Request
-KEYCLOAK=http://192.168.33.10:8080
+KEYCLOAK=http://127.0.0.1:8080
 REALM="master"
 GRANT_TYPE="client_credentials"
-CLIENT="web1"
-CLIENT_SECRET="3d4b20a0-3f0b-4438-b4b5-10923d761cd5"
+CLIENT="psd2-registration"
+CLIENT_SECRET="0d64225f-8e1e-402c-b479-bc4ffa853ae6"
 
 echo "Keycloak host : $KEYCLOAK"
 echo "Full URL : ${KEYCLOAK}/auth/realms/${REALM}/protocol/openid-connect/token"
@@ -41,11 +41,12 @@ PART2_BASE64=$(padBase64 ${PART2_BASE64})
 echo ${PART2_BASE64} | base64 -D | jq .
 
 
+REALM="accounts"
 #Get All Clients
 RESPONSE=$(curl -vk \
     -X GET \
     -H "Authorization: Bearer ${ACCESS_TOKEN}" \
-    ${KEYCLOAK}/auth/admin/realms/${REALM}/clients?clientId=service1)
+    ${KEYCLOAK}/auth/admin/realms/${REALM}/clients/b5749b82-90e5-4a5e-b4d1-21b2bb473be9/roles)
 
 echo ${RESPONSE} | jq .
 

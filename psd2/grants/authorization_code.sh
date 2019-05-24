@@ -12,34 +12,35 @@ function padBase64  {
 }
 
 
-KEYCLOAK=https://sso-sso.apps.ocp.datr.eu
-REALM="demo"
+KEYCLOAK=http://127.0.0.1:8080
+REALM="accounts"
 GRANT_TYPE="authorization_code"
-CLIENT="client1"
-CLIENT_SECRET="c6933bb4-5faf-4bf8-8c74-4d9573d0ff03"
-USER="fire_consent_id"
+CLIENT="amazon"
+CLIENT_SECRET="changeme"
+USER="fireconsentid2"
 USER_PASSWORD="password"
 
 echo "Keycloak host : $KEYCLOAK"
 
 #Get Code
-GET_BODY="scope=openid&response_type=code&client_id=${CLIENT}&redirect_uri=http%3A//127.0.0.1%3A9090/getcode"
+GET_BODY="scope=openid&response_type=code&client_id=${CLIENT}&redirect_uri=http%3A//127.0.0.1%3A9090/authcode"
 
 RESPONSE=$(curl -vk -D headers.txt \
     -u ${USER}:${USER_PASSWORD} \
     -X GET \
+    -H "Host: psd2.bank.com" \
     ${KEYCLOAK}/auth/realms/${REALM}/protocol/openid-connect/auth?${GET_BODY})
 
 echo RESPONSE=$RESPONSE
 LOC=$(grep Location headers.txt)
-#rm -rf headers.txt
+rm -rf headers.txt
 CODE=`echo ${LOC} | awk -F'[=&]' '{print $4}' | tr -cd "[:print:]\n"`
 
 echo "CODE"=${CODE}
 echo ${#CODE}
 
 #Get Token
-POST_BODY="grant_type=${GRANT_TYPE}&redirect_uri=http://127.0.0.1:9090/getcode&client_id=${CLIENT}&client_secret=${CLIENT_SECRET}&code="
+POST_BODY="scope=account&grant_type=${GRANT_TYPE}&redirect_uri=http://127.0.0.1:9090/authcode&client_id=${CLIENT}&client_secret=${CLIENT_SECRET}&code="
 POST_BODY=${POST_BODY}${CODE}
 echo POST_BODY=${POST_BODY}
 

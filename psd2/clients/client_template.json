@@ -1,0 +1,21 @@
+{
+  "clientId": "",
+  "name": "",
+  "enabled": true,
+  "secret": "",
+  "clientTemplate": "",
+  "redirectUris": [
+    ""
+  ],
+  "attributes": {
+    "jwks": "https://bank2.psd2.com/certs",
+    "keyid": "1234567"
+  },
+  "bearerOnly": false,
+  "consentRequired": false,
+  "standardFlowEnabled": true,
+  "implicitFlowEnabled": false,
+  "directAccessGrantsEnabled": false,
+  "serviceAccountsEnabled": true,
+  "fullScopeAllowed": false
+}

@@ -1,0 +1,1 @@
+{ "username": "tonyh", "enabled": true, "totp": false, "emailVerified": false, "firstName": "Anthony", "lastName": "Hopkins", "email": "tony@email.com", "attributes": { "consentid": [ "123456" ] } }

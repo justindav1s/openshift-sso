@@ -1,0 +1,13 @@
+{
+  "username": "",
+  "enabled": true,
+  "firstName": null,
+  "lastName": null,
+  "email": null,
+  "credentials": [
+    {
+      "type": "password",
+      "value": "password"
+    }
+    ]
+}

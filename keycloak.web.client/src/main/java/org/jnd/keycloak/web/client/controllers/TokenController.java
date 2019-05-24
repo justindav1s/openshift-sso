@@ -29,19 +29,28 @@ public class TokenController {
 
     private Log log = LogFactory.getLog(TokenController.class);
 
-    @Value( "${keycloak.realm}" )
-    String realm;
-    @Value( "${client.id}" )
-    String clientId;
-    @Value( "${client.secret}" )
-    String clientSecret;
-    @Value( "${keycloak.token.url}" )
+
+    @Value( "${keycloak.url}" )
     String baseUrl;
 
+    @Value( "${aisp.keycloak.realm}" )
+    String aispRealm;
+    @Value( "${aisp.client.id}" )
+    String aispClientId;
+    @Value( "${aisp.client.secret}" )
+    String aispClientSecret;
+
+    @Value( "${pisp.keycloak.realm}" )
+    String pispRealm;
+    @Value( "${pisp.client.id}" )
+    String pispClientId;
+    @Value( "${pisp.client.secret}" )
+    String pispClientSecret;
 
 
-    @RequestMapping(value = "/token", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity getToken() {
+    @RequestMapping(value = "/aisptoken", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity getAISPToken() {
+
 
         CloseableHttpClient httpClient
                 = HttpClients.custom()
@@ -55,10 +64,10 @@ public class TokenController {
 
         log.info("new token");
 
-        String uri = baseUrl+"/auth/realms/"+realm+"/protocol/openid-connect/token";
+        String uri = baseUrl+"/auth/realms/"+aispRealm+"/protocol/openid-connect/token";
         log.info("Token URL : "+uri);
 
-        String post_body = "grant_type=client_credentials&client_id="+clientId+"&client_secret="+clientSecret;
+        String post_body = "grant_type=client_credentials&client_id="+aispClientId+"&client_secret="+aispClientSecret;
         log.info("Post body : "+post_body);
 
         HttpHeaders headers = new HttpHeaders();
@@ -91,8 +100,9 @@ public class TokenController {
 
     }
 
-    @RequestMapping(value = "/validatetoken", method = RequestMethod.POST, produces = "application/txt")
-    public ResponseEntity validateToken(@RequestBody String token) {
+    @RequestMapping(value = "/pisptoken", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity getPISPToken() {
+
 
         CloseableHttpClient httpClient
                 = HttpClients.custom()
@@ -104,12 +114,12 @@ public class TokenController {
 
         RestTemplate restTemplate = new RestTemplate(requestFactory);
 
-        log.info("validate token");
+        log.info("new token");
 
-        String uri = baseUrl+"/auth/realms/"+realm+"/protocol/openid-connect/token/introspect";
+        String uri = baseUrl+"/auth/realms/"+pispRealm+"/protocol/openid-connect/token";
         log.info("Token URL : "+uri);
 
-        String post_body = "client_id="+clientId+"&client_secret="+clientSecret+"&token="+token;
+        String post_body = "grant_type=client_credentials&client_id="+pispClientId+"&client_secret="+pispClientSecret;
         log.info("Post body : "+post_body);
 
         HttpHeaders headers = new HttpHeaders();
@@ -126,9 +136,60 @@ public class TokenController {
                         String.class);
 
         String response = exchange.getBody();
-        log.info("Response : "+response);
+        log.info("Token : "+response);
 
-        return new ResponseEntity(response, null, HttpStatus.OK);
+        ObjectMapper mapper = new ObjectMapper();
+        TokenResponse token = null;
+        try {
+            token = mapper.readValue(response, TokenResponse.class);
+            log.info("Access Token : "+token.getAccess_token());
+            log.info("Decoded Access Token : "+token.getAccess_tokenDecoded());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return new ResponseEntity(token.getAccess_token(), null, HttpStatus.OK);
 
     }
+
+//    @RequestMapping(value = "/validatetoken", method = RequestMethod.POST, produces = "application/txt")
+//    public ResponseEntity validateToken(@RequestBody String token) {
+//
+//        CloseableHttpClient httpClient
+//                = HttpClients.custom()
+//                .setSSLHostnameVerifier(new NoopHostnameVerifier())
+//                .build();
+//        HttpComponentsClientHttpRequestFactory requestFactory
+//                = new HttpComponentsClientHttpRequestFactory();
+//        requestFactory.setHttpClient(httpClient);
+//
+//        RestTemplate restTemplate = new RestTemplate(requestFactory);
+//
+//        log.info("validate token");
+//
+//        String uri = baseUrl+"/auth/realms/"+realm+"/protocol/openid-connect/token/introspect";
+//        log.info("Token URL : "+uri);
+//
+//        String post_body = "client_id="+clientId+"&client_secret="+clientSecret+"&token="+token;
+//        log.info("Post body : "+post_body);
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.add("Content-Type", "application/x-www-form-urlencoded");
+//
+//
+//        HttpEntity<String> request = new HttpEntity<>(post_body, headers);
+//
+//        ResponseEntity<String> exchange =
+//                restTemplate.exchange(
+//                        uri,
+//                        HttpMethod.POST,
+//                        request,
+//                        String.class);
+//
+//        String response = exchange.getBody();
+//        log.info("Response : "+response);
+//
+//        return new ResponseEntity(response, null, HttpStatus.OK);
+//
+//    }
 }

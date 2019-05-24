@@ -12,9 +12,9 @@ public class TokenUtils {
 
     private RestTemplate restTemplate = new RestTemplate();
 
-    public String getAccessToken() {
+    public String getAccessToken(String realm) {
 
-        String uri = "http://127.0.0.1:9090/token";
+        String uri = "http://127.0.0.1:9090/"+realm+"token";
         log.info("Token URL : "+uri);
 
         ResponseEntity<String> exchange =

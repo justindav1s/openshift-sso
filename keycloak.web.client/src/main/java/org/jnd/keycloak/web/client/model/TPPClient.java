@@ -7,6 +7,12 @@ public class TPPClient {
     private String client_id = null;
     private String client_secret = null;
 
+    public String getRealm() {
+        return realm;
+    }
+
+    private String realm = null;
+
     public String getName() {
         return name;
     }

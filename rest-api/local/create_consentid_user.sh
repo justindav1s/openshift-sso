@@ -40,11 +40,11 @@ PART2_BASE64=$(echo ${ACCESS_TOKEN} | cut -d"." -f2)
 PART2_BASE64=$(padBase64 ${PART2_BASE64})
 echo ${PART2_BASE64} | base64 -D | jq .
 
-USERNAME=tonyh
-FIRSTNAME=Anthony
-LASTNAME=Hopkins
-EMAIL="tony@email.com"
-CONSENTID=123456
+USERNAME=fire_consentid_1
+#FIRSTNAME=Anthony
+#LASTNAME=Hopkins
+#EMAIL="tony@email.com"
+#CONSENTID=123456
 
 USERJSON=`cat user_template.json`
 echo USERJSON = ${USERJSON}
@@ -53,17 +53,17 @@ echo USERJSON = ${USERJSON}
 USERJSON=$(echo ${USERJSON} | jq  -r --arg USERNAME "$USERNAME" '.username = $USERNAME')
 echo USERJSON = ${USERJSON}
 
-USERJSON=$(echo ${USERJSON} | jq  -r --arg FIRSTNAME "$FIRSTNAME" '.firstName = $FIRSTNAME')
-echo USERJSON = ${USERJSON}
-
-USERJSON=$(echo ${USERJSON} | jq  -r --arg LASTNAME "$LASTNAME" '.lastName = $LASTNAME')
-echo USERJSON = ${USERJSON}
-
-USERJSON=$(echo ${USERJSON} | jq  -r --arg EMAIL "$EMAIL" '.email = $EMAIL')
-echo USERJSON = ${USERJSON}
-
-USERJSON=$(echo ${USERJSON} | jq  -r --arg CONSENTID "$CONSENTID" '.attributes.consentid[0] = $CONSENTID')
-echo USERJSON = ${USERJSON}
+#USERJSON=$(echo ${USERJSON} | jq  -r --arg FIRSTNAME "$FIRSTNAME" '.firstName = $FIRSTNAME')
+#echo USERJSON = ${USERJSON}
+#
+#USERJSON=$(echo ${USERJSON} | jq  -r --arg LASTNAME "$LASTNAME" '.lastName = $LASTNAME')
+#echo USERJSON = ${USERJSON}
+#
+#USERJSON=$(echo ${USERJSON} | jq  -r --arg EMAIL "$EMAIL" '.email = $EMAIL')
+#echo USERJSON = ${USERJSON}
+#
+#USERJSON=$(echo ${USERJSON} | jq  -r --arg CONSENTID "$CONSENTID" '.attributes.consentid[0] = $CONSENTID')
+#echo USERJSON = ${USERJSON}
 
 
 echo ${USERJSON} > createuser.json

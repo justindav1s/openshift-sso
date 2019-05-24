@@ -24,76 +24,18 @@ public class NewClientController {
 
     private Log log = LogFactory.getLog(NewClientController.class);
 
-    @Value( "${keycloak.realm}" )
-    String realm;
-    @Value( "${client.id}" )
-    String clientId;
-    @Value( "${client.secret}" )
-    String clientSecret;
-    @Value( "${keycloak.reg.url}" )
+    @Value( "${keycloak.url}" )
     String baseUrl;
 
     private RestTemplate restTemplate = new RestTemplate();
     private TokenUtils tokenUtils = new TokenUtils();
 
     @RequestMapping(value = "/newclient", method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity newclient(@RequestBody TPPClient tppclient, @RequestHeader HttpHeaders headers) {
-
-        log.info("NewClientController new client");
-
-        String accessToken = tokenUtils.getAccessToken();
-        log.info("Access Token : "+accessToken);
-
-        ObjectMapper om = new ObjectMapper();
-        try {
-            String json = om.writeValueAsString(tppclient);
-            log.info("tppclient : "+json);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
-        ClientRepresentation client = new ClientRepresentation();
-        List redirect_uris = new ArrayList();
-        redirect_uris.add(tppclient.getCallback_uri());
-
-        client.setRedirectUris(redirect_uris);
-        client.setName(tppclient.getName());
-        client.setDirectAccessGrantsEnabled(true);
-        client.setServiceAccountsEnabled(true);
-        client.setStandardFlowEnabled(false);
-        client.setPublicClient(false);
-        client.setSecret("mysecret");
-
-        ClientRegistration reg = ClientRegistration.create()
-                .url(baseUrl+"/auth", realm)
-                .build();
-
-        reg.auth(Auth.token(accessToken));
-
-        try {
-            client = reg.create(client);
-        } catch (ClientRegistrationException e) {
-            e.printStackTrace();
-        }
-
-        String registrationAccessToken = client.getRegistrationAccessToken();
-        String secret = client.getSecret();
-        log.debug("Client Secret : "+secret);
-
-        tppclient.setClient_secret(secret);
-
-
-        return new ResponseEntity(accessToken, null, HttpStatus.OK);
-
-    }
-
-
-    @RequestMapping(value = "/newclient2", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity newclient2(@RequestBody TPPClient tppclient) {
 
-        log.info("NewClientController new client");
+        log.info("NewClientController new client for realm :" + tppclient.getRealm());
 
-        String accessToken = tokenUtils.getAccessToken();
+        String accessToken = tokenUtils.getAccessToken(tppclient.getRealm());
         log.info("Access Token : "+accessToken);
 
         ObjectMapper om = new ObjectMapper();
@@ -116,7 +58,7 @@ public class NewClientController {
         client.setStandardFlowEnabled(false);
         client.setSecret(tppclient.getClient_secret());
 
-        String uri = baseUrl+"/auth/realms/"+realm+"/clients-registrations/default";
+        String uri = baseUrl+"/auth/realms/"+tppclient.getRealm()+"/clients-registrations/default";
         log.info("Client Reg URL : "+uri);
 
 
@@ -149,7 +91,6 @@ public class NewClientController {
         log.debug("Client Secret : "+secret);
 
         tppclient.setClient_secret(secret);
-
 
         return new ResponseEntity(accessToken, null, HttpStatus.OK);
 
