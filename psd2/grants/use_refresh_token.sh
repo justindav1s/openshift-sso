@@ -16,7 +16,7 @@ function padBase64  {
 
 
 KEYCLOAK=http://127.0.0.1:8080
-REALM="accounts"
+REALM="payments"
 GRANT_TYPE="refresh_token"
 CLIENT="amazon"
 CLIENT_SECRET="changeme"
@@ -52,8 +52,19 @@ echo ${PART2_BASE64} | base64 -D | jq .
 
 echo "********ID TOKEN**************"
 
+
 #echo "RESPONSE"=${RESPONSE}
 ACCESS_TOKEN=$(echo ${RESPONSE} | jq -r .id_token)
 PART2_BASE64=$(echo ${ACCESS_TOKEN} | cut -d"." -f2)
 PART2_BASE64=$(padBase64 ${PART2_BASE64})
 echo ${PART2_BASE64} | base64 -D | jq .
+
+RESPONSE=$(curl -vk \
+    -d ${POST_BODY} \
+    -H "Content-Type: application/x-www-form-urlencoded" \
+    ${KEYCLOAK}/auth/realms/${REALM}/protocol/openid-connect/token)
+
+echo "********RESPONSE**************"
+
+#echo "RESPONSE"=${RESPONSE}
+echo ${RESPONSE} | jq .

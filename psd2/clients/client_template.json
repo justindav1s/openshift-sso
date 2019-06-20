@@ -8,8 +8,7 @@
     ""
   ],
   "attributes": {
-    "jwks": "https://bank2.psd2.com/certs",
-    "keyid": "1234567"
+    "nca_id": ""
   },
   "bearerOnly": false,
   "consentRequired": false,

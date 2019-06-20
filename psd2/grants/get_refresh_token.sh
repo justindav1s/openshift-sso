@@ -13,7 +13,7 @@ function padBase64  {
 
 
 KEYCLOAK=http://127.0.0.1:8080
-REALM="accounts"
+REALM="payments"
 GRANT_TYPE="authorization_code"
 CLIENT="amazon"
 CLIENT_SECRET="changeme"

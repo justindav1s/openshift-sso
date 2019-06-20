@@ -15,13 +15,13 @@ function padBase64  {
 KEYCLOAK=http://127.0.0.1:8080
 REALM="accounts"
 GRANT_TYPE="client_credentials"
-CLIENT="amazon"
+CLIENT=$1
 CLIENT_SECRET="changeme"
 
 echo "Keycloak host : $KEYCLOAK"
 
 #Get Token
-POST_BODY="grant_type=${GRANT_TYPE}&client_id=${CLIENT}&client_secret=${CLIENT_SECRET}"
+POST_BODY="scope=openid&grant_type=${GRANT_TYPE}&client_id=${CLIENT}&client_secret=${CLIENT_SECRET}"
 
 echo "Keycloak host : $KEYCLOAK"
 echo POST_BODY=${POST_BODY}
@@ -33,10 +33,20 @@ RESPONSE=$(curl -vk \
     ${KEYCLOAK}/auth/realms/${REALM}/protocol/openid-connect/token)
 
 echo "RESPONSE"=${RESPONSE}
+echo "ACCESS TOKEN"
 ACCESS_TOKEN=$(echo ${RESPONSE} | jq -r .access_token)
 PART2_BASE64=$(echo ${ACCESS_TOKEN} | cut -d"." -f2)
 PART2_BASE64=$(padBase64 ${PART2_BASE64})
 echo ${PART2_BASE64} | base64 -D | jq .
 
+echo "REFRESH TOKEN"
+REFRESH_TOKEN=$(echo ${RESPONSE} | jq -r .refresh_token)
+PART2_BASE64=$(echo ${REFRESH_TOKEN} | cut -d"." -f2)
+PART2_BASE64=$(padBase64 ${PART2_BASE64})
+echo ${PART2_BASE64} | base64 -D | jq .
 
-
+echo "ID TOKEN"
+REFRESH_TOKEN=$(echo ${RESPONSE} | jq -r .id_token)
+PART2_BASE64=$(echo ${REFRESH_TOKEN} | cut -d"." -f2)
+PART2_BASE64=$(padBase64 ${PART2_BASE64})
+echo ${PART2_BASE64} | base64 -D | jq .

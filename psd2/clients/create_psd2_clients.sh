@@ -18,9 +18,10 @@ KEYCLOAK=http://127.0.0.1:8080
 echo "Keycloak host : $KEYCLOAK"
 
 NEW_CLIENT_SECRET="changeme"
-NEW_CLIENT_NAME="lloyds"
+NEW_CLIENT_NAME=$1
 NEW_CLIENT_REDIRECT_URI=http://127.0.0.1:9090/authcode
 NEW_CLIENT_TEMPLATE="psd2-template"
+NEW_CLIENT_NCA_ID="justtesting"
 
 echo "GET ACCESS TONKEN FOR REGISTRATION CLIENT*****************************************"
 # Get Access Token with Client Credentials Request
@@ -65,6 +66,9 @@ CLIENTJSON=$(echo ${CLIENTJSON} | jq  -r --arg CLIENT_REDIRECT_URI "$NEW_CLIENT_
 echo CLIENTJSON = ${CLIENTJSON}
 
 CLIENTJSON=$(echo ${CLIENTJSON} | jq  -r --arg NEW_CLIENT_TEMPLATE "$NEW_CLIENT_TEMPLATE" '.clientTemplate = $NEW_CLIENT_TEMPLATE')
+echo CLIENTJSON = ${CLIENTJSON}
+
+CLIENTJSON=$(echo ${CLIENTJSON} | jq  -r --arg NEW_CLIENT_NCA_ID "$NEW_CLIENT_NCA_ID" '.attributes.nca_id = $NEW_CLIENT_NCA_ID')
 echo CLIENTJSON = ${CLIENTJSON}
 
 echo ${CLIENTJSON} > ${NEW_CLIENT_NAME}.json

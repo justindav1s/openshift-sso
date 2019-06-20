@@ -16,6 +16,9 @@ function padBase64  {
 
 echo "GET ACCESS TOKEN**************************************************************"
 # Get Access Token with Client Credentials Request
+
+CLIENTID=$1
+
 KEYCLOAK=http://127.0.0.1:8080
 REALM="master"
 GRANT_TYPE="client_credentials"
@@ -41,7 +44,7 @@ PART2_BASE64=$(padBase64 ${PART2_BASE64})
 echo ${PART2_BASE64} | base64 -D | jq .
 
 
-CLIENTID=amazon
+
 
 echo "DELETE CLIENT FROM accounts**************************************************************"
 REALM="accounts"
@@ -54,7 +57,7 @@ RESPONSE=$(curl -vk \
 echo ${RESPONSE} | jq .
 
 #Find my client id
-MYCLIENT=$(echo ${RESPONSE} | jq '.[] | select(.clientId=="amazon")')
+MYCLIENT=$(echo ${RESPONSE} | jq -r --arg CLIENTID "$CLIENTID" '.[] | select(.clientId==$CLIENTID)')
 echo $MYCLIENT | jq .
 MYCLIENTID=$(echo ${MYCLIENT} | jq -r ."id")
 echo MYCLIENTID=$MYCLIENTID
