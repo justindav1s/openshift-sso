@@ -16,12 +16,12 @@ function padBase64  {
 
 
 KEYCLOAK=http://127.0.0.1:8080
-REALM="payments"
+REALM="accounts"
 GRANT_TYPE="refresh_token"
-CLIENT="amazon"
+CLIENT=$1
 CLIENT_SECRET="changeme"
 
-REFRESH_TOKEN=$(./get_refresh_token.sh)
+REFRESH_TOKEN=$(./get_refresh_token.sh $CLIENT)
 POST_BODY="grant_type=${GRANT_TYPE}&client_id=${CLIENT}&client_secret=${CLIENT_SECRET}&refresh_token=${REFRESH_TOKEN}"
 
 echo POST_BODY=${POST_BODY}

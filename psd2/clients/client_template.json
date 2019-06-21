@@ -8,6 +8,7 @@
     ""
   ],
   "attributes": {
+    "jwks_uri" : "",
     "nca_id": ""
   },
   "bearerOnly": false,

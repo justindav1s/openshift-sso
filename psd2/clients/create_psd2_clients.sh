@@ -21,7 +21,8 @@ NEW_CLIENT_SECRET="changeme"
 NEW_CLIENT_NAME=$1
 NEW_CLIENT_REDIRECT_URI=http://127.0.0.1:9090/authcode
 NEW_CLIENT_TEMPLATE="psd2-template"
-NEW_CLIENT_NCA_ID="justtesting"
+NEW_CLIENT_NCA_ID="eidas.id.${NEW_CLIENT_NAME}.com"
+NEW_CLIENT_EIDAS_JWKS="https://${NEW_CLIENT_NAME}.com/eidas/jwks"
 
 echo "GET ACCESS TONKEN FOR REGISTRATION CLIENT*****************************************"
 # Get Access Token with Client Credentials Request
@@ -69,6 +70,9 @@ CLIENTJSON=$(echo ${CLIENTJSON} | jq  -r --arg NEW_CLIENT_TEMPLATE "$NEW_CLIENT_
 echo CLIENTJSON = ${CLIENTJSON}
 
 CLIENTJSON=$(echo ${CLIENTJSON} | jq  -r --arg NEW_CLIENT_NCA_ID "$NEW_CLIENT_NCA_ID" '.attributes.nca_id = $NEW_CLIENT_NCA_ID')
+echo CLIENTJSON = ${CLIENTJSON}
+
+CLIENTJSON=$(echo ${CLIENTJSON} | jq  -r --arg NEW_CLIENT_EIDAS_JWKS "$NEW_CLIENT_EIDAS_JWKS" '.attributes.jwks_uri = $NEW_CLIENT_EIDAS_JWKS')
 echo CLIENTJSON = ${CLIENTJSON}
 
 echo ${CLIENTJSON} > ${NEW_CLIENT_NAME}.json
