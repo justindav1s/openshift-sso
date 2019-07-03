@@ -38,3 +38,5 @@ hs_err_pid*
 /psd2/users/createuser.json
 /psd2/headers.txt
 /psd2/clients/amazon.json
+/gatekeeper-local/keycloak-gatekeeper
+/gatekeeper-local/keycloak-gatekeeper-darwin-amd64.tar.gz
