@@ -13,6 +13,7 @@ listen: 127.0.0.1:3000
 enable-refresh-tokens: true
 # a collection of resource i.e. urls that you wish to protect
 enable-default-deny: true
+# the url hosting the actual services
 upstream-url: http://127.0.0.1:8081
 redirection-url: http://127.0.0.1:3000
 
