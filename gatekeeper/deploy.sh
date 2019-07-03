@@ -3,7 +3,7 @@
 oc login https://ocp.datr.eu:8443 -u justin
 
 APP=gatekeeper
-POJECT=$APP
+PROJECT=$APP
 
 oc delete project $PROJECT
 oc new-project $PROJECT 2> /dev/null

@@ -7,7 +7,7 @@ RUN cd /go/src/github.com/gatekeeper/ && \
 WORKDIR /go/src/github.com/gatekeeper/keycloak-gatekeeper
 RUN git checkout tags/6.0.1
 
-RUN make && make test
+RUN go get && make && make test
 
 FROM scratch
 WORKDIR /
