@@ -5,7 +5,7 @@ RUN cd /go/src/github.com/gatekeeper/ && \
     git clone https://github.com/keycloak/keycloak-gatekeeper.git
 
 WORKDIR /go/src/github.com/gatekeeper/keycloak-gatekeeper
-RUN git checkout tags/v2.2.2
+RUN git checkout tags/v2.1.0
 
 RUN go get && make && make test
 
