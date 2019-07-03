@@ -9,13 +9,12 @@ client-id: webapp
 client-secret: cc48f8ad-80d3-4019-8d36-7dfb6f5c86e7
 # the interface definition you wish the proxy to listen, all interfaces is specified as ':<port>', unix sockets as unix://<REL_PATH>|</ABS PATH>
 listen: 127.0.0.1:3000
-# whether to enable refresh tokens
-enable-refresh-tokens: true
 # a collection of resource i.e. urls that you wish to protect
 enable-default-deny: true
 # the url hosting the actual services
 upstream-url: http://127.0.0.1:8081
 redirection-url: http://127.0.0.1:3000
+#store-url: boltdb://./boltfile
 
 resources:
 - uri: /api/products/*

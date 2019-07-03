@@ -9,7 +9,7 @@ if [ ! -f "$FILE" ]; then
     tar zxvf keycloak-gatekeeper-darwin-amd64.tar.gz
 fi
 
-./keycloak-gatekeeper --encryption-key=aaaaaaaaaaaaaaaa \
+./keycloak-gatekeeper --encryption-key=Asdfghrf2bdon4gh \
                       --config gatekeeper.yaml \
                       --verbose
 
