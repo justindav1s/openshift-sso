@@ -14,16 +14,15 @@ function padBase64  {
     echo ${STR}
 }
 
-KEYCLOAK=http://127.0.0.1:8080
-echo "Keycloak host : $KEYCLOAK"
-
-echo "GET ACCESS TONKEN FOR REGISTRATION CLIENT*****************************************"
+echo "********************************************************************************"
 # Get Access Token with Client Credentials Request
+KEYCLOAK=http://127.0.0.1:8080
 REALM="master"
 GRANT_TYPE="client_credentials"
 CLIENT="psd2-registration"
 CLIENT_SECRET="0d64225f-8e1e-402c-b479-bc4ffa853ae6"
 
+echo "Keycloak host : $KEYCLOAK"
 echo "Full URL : ${KEYCLOAK}/auth/realms/${REALM}/protocol/openid-connect/token"
 
 #Get Token
@@ -41,37 +40,35 @@ PART2_BASE64=$(echo ${ACCESS_TOKEN} | cut -d"." -f2)
 PART2_BASE64=$(padBase64 ${PART2_BASE64})
 echo ${PART2_BASE64} | base64 -D | jq .
 
-USERNAME=$1
 
-USERJSON=`cat user_template.json`
-echo USERJSON = ${USERJSON}
 
-#update user's json representation with new consent id
-USERJSON=$(echo ${USERJSON} | jq  -r --arg USERNAME "$USERNAME" '.username = $USERNAME')
-echo USERJSON = ${USERJSON}
+#echo getting client by name, this returns an array of clients
+#REALM="accounts"
+##Get All Clients
+#RESPONSE=$(curl -vk \
+#    -X GET \
+#    -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+#    ${KEYCLOAK}/auth/admin/realms/${REALM}/clients)
+#
+#echo ${RESPONSE} | jq .
 
-echo ${USERJSON} > createuser.json
-
+echo getting client by name, this returns an array of clients
 REALM="accounts"
-#Update user in Keycloak
+#Get All Clients
 RESPONSE=$(curl -vk \
-    -X POST \
-    --data @createuser.json \
-    -H "Content-Type: application/json" \
+    -X GET \
     -H "Authorization: Bearer ${ACCESS_TOKEN}" \
-    ${KEYCLOAK}/auth/admin/realms/${REALM}/users)
+    ${KEYCLOAK}/auth/admin/realms/${REALM}/clients?clientId=lloyds)
 
-echo "RESPONSE"=${RESPONSE}
+echo ${RESPONSE} | jq .
 
-REALM="payments"
-#Update user in Keycloak
+
+echo getting client by name, this returns an array of clients
+REALM="accounts"
+#Get All Clients
 RESPONSE=$(curl -vk \
-    -X POST \
-    --data @createuser.json \
-    -H "Content-Type: application/json" \
+    -X GET \
     -H "Authorization: Bearer ${ACCESS_TOKEN}" \
-    ${KEYCLOAK}/auth/admin/realms/${REALM}/users)
+    ${KEYCLOAK}/auth/admin/realms/${REALM}/clients/7151096b-aad9-4112-b345-362da057fd20)
 
-echo "RESPONSE"=${RESPONSE}
-
-rm -rf createuser.json
+echo ${RESPONSE} | jq .
