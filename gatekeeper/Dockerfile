@@ -1,16 +1,9 @@
-FROM golang:1.10.3
+FROM centos
 
-RUN mkdir -p /go/src/github.com/gatekeeper
-RUN cd /go/src/github.com/gatekeeper/ && \
-    git clone https://github.com/keycloak/keycloak-gatekeeper.git
+RUN mkdir -p /app
+WORKDIR /app
+RUN wget https://downloads.jboss.org/keycloak/4.8.3.Final/gatekeeper/keycloak-gatekeeper-linux-amd64.tar.gz
+RUN tar zxvf keycloak-gatekeeper-linux-amd64.tar.gz && ls -ltr
 
-WORKDIR /go/src/github.com/gatekeeper/keycloak-gatekeeper
-RUN git checkout tags/v2.1.0
-
-RUN go get && make && make test
-
-FROM scratch
-WORKDIR /
-COPY --from=0 bin/keycloak-gatekeeper /keycloak-gatekeeper
 EXPOSE 8080
-CMD ["/keycloak-gatekeeper"]
+CMD ["/app/keycloak-gatekeeper"]
