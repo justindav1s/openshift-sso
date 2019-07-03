@@ -1,0 +1,10 @@
+# is the url for retrieve the OpenID configuration - normally the <server>/auth/realm/<realm_name>
+discovery-url: https://keycloak.example.com/auth/realms/<REALM_NAME>
+# the client id for the 'client' application
+client-id: <CLIENT_ID>
+# the secret associated to the 'client' application
+client-secret: <CLIENT_SECRET>
+# the interface definition you wish the proxy to listen, all interfaces is specified as ':<port>', unix sockets as unix://<REL_PATH>|</ABS PATH>
+listen: 127.0.0.1:3000
+# whether to enable refresh tokens
+enable-refresh-tokens: true
