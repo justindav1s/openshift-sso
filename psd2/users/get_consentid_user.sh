@@ -22,7 +22,7 @@ echo "GET ACCESS TONKEN FOR REGISTRATION CLIENT*********************************
 REALM="master"
 GRANT_TYPE="client_credentials"
 CLIENT="psd2-registration"
-CLIENT_SECRET="0d64225f-8e1e-402c-b479-bc4ffa853ae6"
+CLIENT_SECRET="29483e03-1182-4ff0-86a6-5e7da17bcf80"
 
 echo "Full URL : ${KEYCLOAK}/auth/realms/${REALM}/protocol/openid-connect/token"
 
