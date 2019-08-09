@@ -17,7 +17,7 @@ REALM="accounts"
 GRANT_TYPE="authorization_code"
 CLIENT=$1
 CLIENT_SECRET="changeme"
-USER="fireconsentid2"
+USER=$2
 USER_PASSWORD="password"
 
 echo "Keycloak host : $KEYCLOAK"
