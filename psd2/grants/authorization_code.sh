@@ -52,6 +52,7 @@ RESPONSE=$(curl -vk \
 echo "RESPONSE"=${RESPONSE}
 ACCESS_TOKEN=$(echo ${RESPONSE} | jq -r .access_token)
 PART2_BASE64=$(echo ${ACCESS_TOKEN} | cut -d"." -f2)
+echo $PART2_BASE64
 PART2_BASE64=$(padBase64 ${PART2_BASE64})
 echo "ACCESS TOKEN"
 echo ${PART2_BASE64} | base64 -D | jq .

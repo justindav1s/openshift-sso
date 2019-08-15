@@ -15,9 +15,9 @@ enable-default-deny: true
 upstream-url: http://127.0.0.1:8081
 redirection-url: http://127.0.0.1:3000
 #store-url: boltdb://./boltfile
-
+#no-redirects: true
 resources:
-- uri: /api/products/*
+- uri: /products/*
   methods:
   - GET
   - POST

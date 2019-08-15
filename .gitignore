@@ -40,3 +40,7 @@ hs_err_pid*
 /psd2/clients/amazon.json
 /gatekeeper-local/keycloak-gatekeeper
 /gatekeeper-local/keycloak-gatekeeper-darwin-amd64.tar.gz
+/ss073/certs/fullchain.cer
+/ss073/certs/ca.cer
+/ss073/certs/datr.eu.cer
+/ss073/certs/datr.eu.key
